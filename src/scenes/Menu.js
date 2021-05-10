@@ -10,11 +10,11 @@ class Menu extends Phaser.Scene {
     create() {
         this.playButton = this.add.text(100, 100, 'Play', {fill: '#0ff'});
         this.playButton.setInteractive();
-        this.playButton.on('pointerup', () => { loadPlayScene() });
+        this.playButton.on('pointerup', () => { this.loadPlayScene() });
 
-        this.tutorialButton = this.add.text(100, 200, 'Play', {fill: '#0ff'});
+        this.tutorialButton = this.add.text(100, 200, 'Tutorial', {fill: '#0ff'});
         this.tutorialButton.setInteractive();
-        this.tutorialButton.on('pointerup', () => { loadTutorialScene() });
+        this.tutorialButton.on('pointerup', () => { this.loadTutorialScene() });
     }
 
     loadPlayScene() {
