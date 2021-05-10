@@ -1,8 +1,8 @@
 "use strict";
 let config = {
     type: Phaser.CANVAS,
-    width: 1080,
-    height: 920,
+    width: 960,
+    height: 600,
       fps: {
           target: 60,
           forceSetTimeOut: true
@@ -13,5 +13,5 @@ let config = {
 let game = new Phaser.Game(config);
 
 // Declare Keys (Change if needed)
-let keyA, keyD, keyW, keyS, keyE, keyF, keyQ, keyR, keySPACE, keyEsc;
+let keyA, keyD, keyW, keyS, keyE, keyF, keyQ, keyR, keySPACE, keyEsc, keySHIFT;
 let cursors;
