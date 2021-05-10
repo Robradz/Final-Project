@@ -8,13 +8,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        // Possible cases: 
-        // Is shift down?
         checkSneak();
         manageMovement();
-        // up, down, left, right
-        // up+left, up+right
-        // down+left, down+right
     }
 
     CheckSneak() {
