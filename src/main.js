@@ -1,8 +1,8 @@
 "use strict";
 let config = {
     type: Phaser.CANVAS,
-    width: 960,
-    height: 600,
+    width: 1024,
+    height: 576,
       fps: {
           target: 60,
           forceSetTimeOut: true
