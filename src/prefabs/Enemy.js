@@ -11,7 +11,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         this.updateDirection();
-        if (this.player.state != "sneaking") {
+        if (this.player.state != "sneaking" &&
+            this.player.state != "idle") {
             this.checkRadius();
         }
         this.checkCone();
