@@ -7,7 +7,6 @@ class Tutorial extends Phaser.Scene {
         this.load.image('Tilemap.png', 'assets/Tilemap.png');
         this.load.image('player', 'assets/tempdoc.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tempmap.json');
-
     }
 
     create() {
@@ -16,6 +15,8 @@ class Tutorial extends Phaser.Scene {
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
         const map = this.make.tilemap({ key: 'tilesets' });
         const tileset = map.addTilesetImage('tilesets', 'Tilemap.png');
         map.createLayer('Background', tileset);
@@ -29,13 +30,28 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.existing(this.player);
         this.cameras.main.startFollow(this.player, false, 0.08, 0.08, 0, 0);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        //this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.obstacles.setCollisionByProperty({ collides: true });
         this.obstacles.setCollisionByExclusion([-1]);
         this.physics.add.collider(this.player, this.obstacles);
+
+        window.addEventListener('keydown', (e) => this.checkPause(e.key));
     }
 
     update() {
         this.player.update();
+    }
+
+    checkPause(key) {
+        if (key == "Escape" && !this.paused) {
+            this.paused = true;
+            console.log("Paused: " + this.paused);
+            this.scene.pause();
+            this.scene.launch("pauseScene");
+        } else if (key == "Escape" && this.paused) {
+            this.paused = false;
+            console.log("Paused: " + this.paused);
+            this.scene.stop("pauseScene");
+            this.scene.resume("playScene");
+        }
     }
 }
