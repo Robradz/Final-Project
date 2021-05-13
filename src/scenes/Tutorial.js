@@ -26,8 +26,13 @@ class Tutorial extends Phaser.Scene {
         map.createLayer('Foreground', tileset);
         this.cameras.main.setZoom(2);
         this.player = new Player(this, 300, 300, 'player');
+        this.enemy1 = new Enemy(this, 245, 245, 'player');
+        this.enemy1.depth = 10;
         this.add.existing(this.player);
         this.physics.add.existing(this.player);
+        this.add.existing(this.enemy1);
+        this.physics.add.existing(this.enemy1);
+        console.log(this.enemy1);
         this.cameras.main.startFollow(this.player, false, 0.08, 0.08, 0, 0);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.obstacles.setCollisionByProperty({ collides: true });
@@ -39,6 +44,7 @@ class Tutorial extends Phaser.Scene {
 
     update() {
         this.player.update();
+        this.enemy1.update();
     }
 
     checkPause(key) {
