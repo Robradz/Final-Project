@@ -2,69 +2,64 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.movementSpeed = 3;
+        this.movementSpeed = 40;
         this.sneaking = false;
         this.state = "idle";
     }
 
     update() {
-        checkSneak();
-        manageMovement();
+        this.checkSneak();
+        this.manageMovement();
     }
 
-    CheckSneak() {
-        if (Phaser.Input.Keyboard.isDown(keyShift)) {
-            this.movementSpeed = 2;
+    checkSneak() {
+        if (keySHIFT.isDown) {
+            this.movementSpeed = 25;
             this.sneaking = true;
         } else {
-            this.movementSpeed = 3;
+            this.movementSpeed = 40;
             this.sneaking = false;
         }
     }
 
     manageMovement() {
-        if (Phaser.Input.Keyboard.isDown(keyW) && Phaser.Input.Keyboard.isDown(keyA)) {
-            this.setVelocityX(-this.movementSpeed / Math.sqrt(2));
-            this.setVelocityY(-this.movementSpeed / Math.sqrt(2));
+        if (keyW.isDown && keyA.isDown) {
+            this.setVelocity(-this.movementSpeed / Math.sqrt(2), 
+                            -this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
         } else 
-        if (Phaser.Input.Keyboard.isDown(keyW) && Phaser.Input.Keyboard.isDown(keyD)) {
-            this.setVelocityX(this.movementSpeed / Math.sqrt(2));
-            this.setVelocityY(-this.movementSpeed / Math.sqrt(2));
+        if (keyW.isDown && keyD.isDown) {
+            this.setVelocity(this.movementSpeed / Math.sqrt(2), 
+                            -this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
         } else
-        if (Phaser.Input.Keyboard.isDown(keyS) && Phaser.Input.Keyboard.isDown(keyA)) {
-            this.setVelocityX(-this.movementSpeed / Math.sqrt(2));
-            this.setVelocityY(this.movementSpeed / Math.sqrt(2));
+        if (keyS.isDown && keyA.isDown) {
+            this.setVelocity(-this.movementSpeed / Math.sqrt(2), 
+                            this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
         } else
-        if (Phaser.Input.Keyboard.isDown(keyS) && Phaser.Input.Keyboard.isDown(keyD)) {
-            this.setVelocityX(this.movementSpeed / Math.sqrt(2));
-            this.setVelocityY(this.movementSpeed / Math.sqrt(2));
-            this.state = this.sneaking ? "sneaking" : "walking";
-        }
-        if (Phaser.Input.Keyboard.isDown(keyW)) {
-            this.setVelocityX(0);
-            this.setVelocityY(-this.movementSpeed);
+        if (keyS.isDown && keyD.isDown) {
+            this.setVelocity(this.movementSpeed / Math.sqrt(2), 
+                            this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
         } else
-        if (Phaser.Input.Keyboard.isDown(keyS)) {
-            this.setVelocityX(0);
-            this.setVelocityY(this.movementSpeed);
+        if (keyW.isDown) {
+            this.setVelocity(0, -this.movementSpeed);
             this.state = this.sneaking ? "sneaking" : "walking";
         } else
-        if (Phaser.Input.Keyboard.isDown(keyA)) {
-            this.setVelocityX(-this.movementSpeed);
-            this.setVelocityY(0);
+        if (keyS.isDown) {
+            this.setVelocity(0, this.movementSpeed);
             this.state = this.sneaking ? "sneaking" : "walking";
         } else
-        if (Phaser.Input.Keyboard.isDown(keyD)) {
-            this.setVelocityX(this.movementSpeed);
-            this.setVelocityY(0);
+        if (keyA.isDown) {
+            this.setVelocity(-this.movementSpeed, 0);
+            this.state = this.sneaking ? "sneaking" : "walking";
+        } else
+        if (keyD.isDown) {
+            this.setVelocity(this.movementSpeed, 0);
             this.state = this.sneaking ? "sneaking" : "walking";
         } else {
-            this.setVelocityX(0);
-            this.setVelocityY(0);
+            this.setVelocity(0, 0);
             this.state = "idle";
         }
     }
