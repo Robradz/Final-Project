@@ -51,7 +51,7 @@ class Tutorial extends Phaser.Scene {
             this.paused = false;
             console.log("Paused: " + this.paused);
             this.scene.stop("pauseScene");
-            this.scene.resume("playScene");
+            this.scene.resume("tutorialScene");
         }
     }
 }
