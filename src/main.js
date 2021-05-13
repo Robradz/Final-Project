@@ -9,6 +9,10 @@ let config = {
           },
           physics: {
             default: 'arcade',
+            arcade: {
+                //debug: true,
+                gravity: { y: 0 }
+            }
         },
     scene: [Menu, Tutorial, Play, Pause]
 }
