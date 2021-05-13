@@ -8,7 +8,7 @@ class Pause extends Phaser.Scene {
     }
 
     create() {
-        
+        this.add.text(100, 200, 'Paused', {fill: '#0ff'});
     }
 
     update() {
