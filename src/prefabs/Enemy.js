@@ -82,6 +82,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         if (this.distanceBetween(this.player.x, this.player.y, this.x, this.y) 
                                 < this.detectionRadius) {
             console.warn("Player detected by radius");
+            game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
         }
     }
