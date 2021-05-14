@@ -4,12 +4,29 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         this.detectionRadius = 30;
         this.detectionDistance = 60;
+        this.movementSpeed = 60;
         this.facing = "right";
         this.player = scene.player;
         this.scene = scene;
+        this.movementStep = 1;
     }
 
     update() {
+        if(this.path){
+
+            this.scene.physics.moveTo(this, 
+                this.path.x + this.getDestination().x,
+                this.path.y + this.getDestination().y,
+                this.movementSpeed);
+            if(Math.abs(this.path.x + this.getDestination().x - this.x) < 1
+              && Math.abs(this.path.y + this.getDestination().y - this.y) < 1){
+                this.setVelocity(0, 0);
+                this.movementStep++;
+                this.movementStep = this.movementStep % 
+                        (Object.getOwnPropertyNames(this.path.polygon).length - 1);
+            }
+        }
+
         this.updateDirection();
         if (this.player.state != "sneaking" &&
             this.player.state != "idle") {
@@ -66,5 +83,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         } else if (this.body.deltaY > 0) {
             this.facing = "down";
         }
+    }
+
+    getDestination() {
+        return this.path.polygon[this.movementStep];
     }
 }
