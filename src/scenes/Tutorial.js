@@ -5,7 +5,7 @@ class Tutorial extends Phaser.Scene {
 
     preload() {
         this.load.image('Tilemap.png', 'assets/Tilemap.png');
-        this.load.image('player', 'assets/scientist-1.png');
+        this.load.image('player', 'assets/scientist.png');
         this.load.image('enemy', 'assets/temp_enemy.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tempmap.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
