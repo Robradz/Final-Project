@@ -4,16 +4,16 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         this.detectionRadius = 30;
         this.detectionDistance = 60;
-        this.movementSpeed = 60;
+        this.movementSpeed = 30;
         this.facing = "right";
         this.player = scene.player;
         this.scene = scene;
         this.movementStep = 1;
+        this.isTrailing = false;
     }
 
     update() {
-        if(this.path){
-
+        if(this.path && !this.isTrailing){
             this.scene.physics.moveTo(this, 
                 this.path.x + this.getDestination().x,
                 this.path.y + this.getDestination().y,
@@ -24,6 +24,18 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.movementStep++;
                 this.movementStep = this.movementStep % 
                         (Object.getOwnPropertyNames(this.path.polygon).length - 1);
+            }
+        }
+
+        if(this.isTrailing){
+            if(Math.abs(this.player.x - this.x) > 2){
+                this.setVelocity(0, 0);
+                this.scene.physics.moveToObject(this, this.player, this.movementSpeed);
+                this.body.setVelocityY(0);
+            }else if(Math.abs(this.player.y - this.y) > 2){
+                this.setVelocity(0, 0);
+                this.scene.physics.moveToObject(this, this.player, this.movementSpeed);
+                this.body.setVelocityX(0);
             }
         }
 
@@ -70,6 +82,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         if (this.distanceBetween(this.player.x, this.player.y, this.x, this.y) 
                                 < this.detectionRadius) {
             console.warn("Player detected by radius");
+            this.isTrailing = true;
         }
     }
 

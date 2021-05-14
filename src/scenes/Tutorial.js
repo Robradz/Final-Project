@@ -54,6 +54,10 @@ class Tutorial extends Phaser.Scene {
         this.player.update();
         this.enemy1.update();        
     }
+    
+    distanceBetween(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+    }
 
     checkPause(key) {
         if (key == "Escape" && !this.paused) {
