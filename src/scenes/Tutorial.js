@@ -8,6 +8,7 @@ class Tutorial extends Phaser.Scene {
         this.load.image('player', 'assets/tempdoc.png');
         this.load.image('enemy', 'assets/temp_enemy.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tempmap.json');
+        this.load.audio('footsteps', './assets/footsteps.wav');
     }
 
     create() {
@@ -65,9 +66,6 @@ class Tutorial extends Phaser.Scene {
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
                 game.prompt.text = "This is the exit. This level is supposed to be ended here.";
-                console.log("Paused: " + this.paused);
-                this.scene.pause();
-                this.scene.launch("pauseScene");
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,

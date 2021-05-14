@@ -4,7 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-
+        this.load.audio('theme', './assets/title theme.wav');
     }
 
     create() {
@@ -14,9 +14,12 @@ class Menu extends Phaser.Scene {
         // this.playButton.setInteractive();
         // this.playButton.on('pointerup', () => { this.loadPlayScene() });
 
-        this.tutorialButton = this.add.text(100, 200, 'Tutorial', {fill: '#0ff'});
+        this.tutorialButton = this.add.text(100, 200, 'Tutorial(Click on me)', {fill: '#0ff'});
         this.tutorialButton.setInteractive();
         this.tutorialButton.on('pointerup', () => { this.loadTutorialScene() });
+
+        this.bgm = this.sound.add('theme',{volume: 1,loop:true});
+        this.bgm.play();
     }
 
     loadPlayScene() {
