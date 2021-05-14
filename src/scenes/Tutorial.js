@@ -73,7 +73,7 @@ class Tutorial extends Phaser.Scene {
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
-                game.prompt.text = "keep a distance with him the alien, your footsteps can attract him."+
+                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
                                     "\nIf he got attracted, he will trail you. Find a way out.";
             }
         }
