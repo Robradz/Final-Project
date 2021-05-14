@@ -5,6 +5,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.movementSpeed = 40;
         this.sneaking = false;
         this.state = "idle";
+        this.sfx = this.scene.sound.add('footsteps',{volume: 1,loop:true});
     }
 
     update() {
@@ -27,40 +28,65 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocity(-this.movementSpeed / Math.sqrt(2), 
                             -this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else 
         if (keyW.isDown && keyD.isDown) {
             this.setVelocity(this.movementSpeed / Math.sqrt(2), 
                             -this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else
         if (keyS.isDown && keyA.isDown) {
             this.setVelocity(-this.movementSpeed / Math.sqrt(2), 
                             this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else
         if (keyS.isDown && keyD.isDown) {
             this.setVelocity(this.movementSpeed / Math.sqrt(2), 
                             this.movementSpeed / Math.sqrt(2));
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else
         if (keyW.isDown) {
             this.setVelocity(0, -this.movementSpeed);
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else
         if (keyS.isDown) {
             this.setVelocity(0, this.movementSpeed);
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else
         if (keyA.isDown) {
             this.setVelocity(-this.movementSpeed, 0);
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else
         if (keyD.isDown) {
             this.setVelocity(this.movementSpeed, 0);
             this.state = this.sneaking ? "sneaking" : "walking";
+            if(!this.sfx.isPlaying && !this.sneaking){
+                this.sfx.play()
+            }
         } else {
             this.setVelocity(0, 0);
             this.state = "idle";
+            this.sfx.stop();
         }
     }
 }
