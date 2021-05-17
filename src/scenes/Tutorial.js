@@ -5,7 +5,7 @@ class Tutorial extends Phaser.Scene {
 
     preload() {
         this.load.image('Tilemap.png', 'assets/Tilemap.png');
-        this.load.image('player', 'assets/tempdoc.png');
+        this.load.image('player', 'assets/scientist.png');
         this.load.image('enemy', 'assets/temp_enemy.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tempmap.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
@@ -51,7 +51,14 @@ class Tutorial extends Phaser.Scene {
         this.obstacles.setCollisionByProperty({ collides: true });
         this.obstacles.setCollisionByExclusion([-1]);
         this.physics.add.collider(this.player, this.obstacles);
-        this.physics.add.collider(this.player, this.enemy1);
+        this.physics.add.collider(this.player, this.enemy1, (player, enemy1)=>{
+            this.paused = true;
+            this.scene.pause();
+            this.scene.launch("pauseScene");
+            game.prompt.text = "YOU GOT CAUGHT!";
+            this.player.x = this.spawnXY.x;
+            this.player.y = this.spawnXY.y;
+        });
         this.physics.add.collider(this.enemy1, this.obstacles);
 
         window.addEventListener('keydown', (e) => this.checkPause(e.key));
