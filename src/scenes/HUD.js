@@ -10,7 +10,8 @@ class HUD extends Phaser.Scene {
     }
 
     create() {
-        game.prompt = this.add.text(340, 20, 'Go to the lighter area and press F to go through the vent', {fill: '#0ff'});
+        game.prompt = this.add.text(340, 20, "MOVE:WASD ECS:PAUSE/RESUME"
+        +'\nGo to the lighter area and press F to go through the vent', {fill: '#0ff'});
     }
 
 
