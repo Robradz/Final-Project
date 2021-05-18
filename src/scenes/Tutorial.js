@@ -61,6 +61,7 @@ class Tutorial extends Phaser.Scene {
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
 
+        // This launches the pause screen whenever ESC is pressed
         window.addEventListener('keydown', (e) => this.checkPause(e.key));
         this.scene.launch("HUDScene");
     }
