@@ -5,12 +5,56 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.movementSpeed = 40;
         this.sneaking = false;
         this.state = "idle";
+        this.facing = "right";
         this.sfx = this.scene.sound.add('footsteps',{volume: 1,loop:true});
+        window.addEventListener('keydown', (e) => this.manageAbilities(e.key));
     }
 
     update() {
         this.checkSneak();
         this.manageMovement();
+    }
+
+    dash() {
+        console.log("dash");
+    }
+
+    teleport(){
+        console.log("tp");
+    }
+
+    invisibility() {
+        console.log("invisible");
+    }
+
+    slowTime() {
+        console.log("slowTime");
+    }
+
+    manageAbilities(key) {
+        switch(key) {
+            case " ": // Space ASCII code = 32
+                this.dash();
+                break;
+            case "q": // Q ASCII code = 81
+                this.teleport();
+                break;
+            case "e": // E ASCII code = 69
+                this.invisibility();
+                break;
+            case "r": // R ASCII code = 82
+                this.slowTime();
+                break;
+            case "Q": // Q ASCII code = 81
+                this.teleport();
+                break;
+            case "E": // E ASCII code = 69
+                this.invisibility();
+                break;
+            case "R": // R ASCII code = 82
+                this.slowTime();
+                break;
+        }
     }
 
     checkSneak() {
