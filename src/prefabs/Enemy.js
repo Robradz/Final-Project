@@ -75,7 +75,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             console.warn("Player caught by cone facing up");
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
-        } else if (this.facing == "up" && this.player.y > this.y &&
+        } else if (this.facing == "down" && this.player.y > this.y &&
             Math.abs(this.player.y - this.y) > 
             Math.abs(this.player.x - this.x)) {
             console.warn("Player caught by cone facing down");
