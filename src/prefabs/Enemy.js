@@ -10,6 +10,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.movementStep = 1;
         this.isTrailing = false;
+        this.lastPositionX = x;
+        this.lastPositionY = y;
     }
 
     update() {
@@ -96,15 +98,22 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     updateDirection() {
-        if (this.body.deltaX > 0) {
+        if (this.x > this.lastPositionX && 
+            Math.abs(this.x - this.lastPositionX) > 
+            Math.abs(this.y - this.lastPositionY)) {
             this.facing = "right";
-        } else if (this.body.deltaX < 0) {
+        } else if (this.x < this.lastPositionX && 
+            Math.abs(this.x - this.lastPositionX) > 
+            Math.abs(this.y - this.lastPositionY)) {
             this.facing = "left";
-        } else if (this.body.deltaY < 0) {
+        } else if (this.y < this.lastPositionY) {
             this.facing = "up";
-        } else if (this.body.deltaY > 0) {
+        } else if (this.y > this.lastPositionY) {
             this.facing = "down";
         }
+        this.lastPositionX = this.x;
+        this.lastPositionY = this.y;
+        console.log(this.facing);
     }
 
     getDestination() {
