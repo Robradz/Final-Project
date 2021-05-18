@@ -113,7 +113,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
         this.lastPositionX = this.x;
         this.lastPositionY = this.y;
-        console.log(this.facing);
     }
 
     getDestination() {
