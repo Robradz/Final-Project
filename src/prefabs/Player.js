@@ -6,8 +6,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.sneaking = false;
         this.state = "idle";
         this.facing = "right";
+        this.scene = scene;
         this.sfx = this.scene.sound.add('footsteps',{volume: 1,loop:true});
         window.addEventListener('keydown', (e) => this.manageAbilities(e.key));
+        this.timer = new Phaser.Time.Clock(this.scene);
     }
 
     update() {
@@ -16,11 +18,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     dash() {
-        console.log("dash");
+        this.state = "dashing";
     }
 
     teleport(){
-        console.log("tp");
+        this.state = "teleporting";
     }
 
     invisibility() {
@@ -67,7 +69,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    stopDash() {
+        this.state = "idle";
+        console.log("stopDash");
+    }
+
     manageMovement() {
+        if (this.state == "dashing") {
+            console.log("dashing");
+            this.movementSpeed = 950;
+            
+            // this timer doesn't work at all...
+            this.timer.delayedCall(3000, this.stopDash, [], this.scene);
+        }
         if (keyW.isDown && keyA.isDown) {
             this.setVelocity(-this.movementSpeed / Math.sqrt(2), 
                             -this.movementSpeed / Math.sqrt(2));
@@ -75,6 +89,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "upLeft";
         } else 
         if (keyW.isDown && keyD.isDown) {
             this.setVelocity(this.movementSpeed / Math.sqrt(2), 
@@ -83,6 +98,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "upRight";
         } else
         if (keyS.isDown && keyA.isDown) {
             this.setVelocity(-this.movementSpeed / Math.sqrt(2), 
@@ -91,6 +107,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "downLeft";
         } else
         if (keyS.isDown && keyD.isDown) {
             this.setVelocity(this.movementSpeed / Math.sqrt(2), 
@@ -99,6 +116,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "downRight"
         } else
         if (keyW.isDown) {
             this.setVelocity(0, -this.movementSpeed);
@@ -106,6 +124,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "up";
         } else
         if (keyS.isDown) {
             this.setVelocity(0, this.movementSpeed);
@@ -113,6 +132,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "down";
         } else
         if (keyA.isDown) {
             this.setVelocity(-this.movementSpeed, 0);
@@ -120,6 +140,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "left";
         } else
         if (keyD.isDown) {
             this.setVelocity(this.movementSpeed, 0);
@@ -127,6 +148,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(!this.sfx.isPlaying && !this.sneaking){
                 this.sfx.play()
             }
+            this.facing = "right";
         } else {
             this.setVelocity(0, 0);
             this.state = "idle";
