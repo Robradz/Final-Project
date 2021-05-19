@@ -66,6 +66,10 @@ class Tutorial extends Phaser.Scene {
         this.scene.launch("HUDScene");
     }
 
+    stopDash() {
+        this.player.stopDash();
+    }
+
     update() {
         this.player.update();
         this.enemy1.update();
