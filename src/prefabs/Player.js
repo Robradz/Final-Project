@@ -3,6 +3,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.movementSpeed = 40;
+        this.teleportDistance = 150;
         this.sneaking = false;
         this.state = "idle";
         this.facing = "right";
@@ -40,8 +41,47 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    // TODO: Make this check that the location works
     teleport(){
-        this.state = "teleporting";
+        if (this.ready.teleport) {
+            this.state = "teleporting";
+            this.ready.teleport = false;
+            this.scene.time.delayedCall(
+                this.cooldowns.teleport, 
+                () => { this.ready.teleport = true; }, 
+                [], this.scene );
+            switch(this.facing) {
+                case "upLeft":
+                    this.x -= this.teleportDistance / Math.sqrt(2);
+                    this.y -= this.teleportDistance / Math.sqrt(2);
+                    break;
+                case "upRight":
+                    this.x += this.teleportDistance / Math.sqrt(2);
+                    this.y -= this.teleportDistance / Math.sqrt(2);
+                    break;
+                case "downLeft":
+                    this.x += this.teleportDistance / Math.sqrt(2);
+                    this.y -= this.teleportDistance / Math.sqrt(2);
+                    break;
+                case "downRight":
+                    this.x += this.teleportDistance / Math.sqrt(2);
+                    this.y += this.teleportDistance / Math.sqrt(2);
+                    break;
+                case "up":
+                    this.y -= this.teleportDistance;
+                    break;
+                case "left":
+                    this.x -= this.teleportDistance;
+                    break;
+                case "down":
+                    this.y += this.teleportDistance;
+                    break;
+                case "right":
+                    this.x += this.teleportDistance;
+                    break;
+            }
+            this.state = "idle";
+        }
     }
 
     invisibility() {
@@ -93,6 +133,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     manageMovement() {
+        if (this.state == "teleporting") { return; }
         if (this.state == "dashing") {
             this.movementSpeed = 200;
             
@@ -104,9 +145,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "upLeft";
         } else 
         if (keyW.isDown && keyD.isDown) {
@@ -115,9 +154,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "upRight";
         } else
         if (keyS.isDown && keyA.isDown) {
@@ -126,9 +163,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "downLeft";
         } else
         if (keyS.isDown && keyD.isDown) {
@@ -137,9 +172,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "downRight"
         } else
         if (keyW.isDown) {
@@ -147,9 +180,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "up";
         } else
         if (keyS.isDown) {
@@ -157,9 +188,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "down";
         } else
         if (keyA.isDown) {
@@ -167,9 +196,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "left";
         } else
         if (keyD.isDown) {
@@ -177,15 +204,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = this.sneaking ? "sneaking" : "walking";
             }
-            if(!this.sfx.isPlaying && !this.sneaking){
-                this.sfx.play()
-            }
+            this.manageFootsteps();
             this.facing = "right";
         } else {
             this.setVelocity(0, 0);
             if (this.state != "dashing") {
                 this.state = "idle";
             }
+            this.sfx.stop();
+        }
+    }
+
+    manageFootsteps() {
+        if (!this.sfx.isPlaying && !this.sneaking) {
+            this.sfx.play();
+        } else if (this.sneaking) {
             this.sfx.stop();
         }
     }
