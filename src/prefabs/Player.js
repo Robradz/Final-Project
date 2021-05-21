@@ -85,11 +85,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     invisibility() {
-        console.log("invisible");
+        if (this.ready.invisibility) {
+            this.state = "invisible";
+            this.alpha = 0;
+            this.ready.invisibility = false;
+            this.scene.time.delayedCall(
+                this.cooldowns.invisibility, 
+                () => { 
+                    this.ready.invisibility = true; 
+                    this.alpha = 1}, 
+                [], this.scene );
+        }
     }
 
     slowTime() {
-        console.log("slowTime");
+        this.scene.time.timeScale = .5;
     }
 
     manageAbilities(key) {
