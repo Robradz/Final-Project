@@ -46,7 +46,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.player.state != "idle") {
             this.checkRadius();
         }
-        this.checkCone();
+        if (this.player.state != "invisible") {
+            this.checkCone();
+        }
     }
 
     detectionAngle(ex, ey, px, py) {
