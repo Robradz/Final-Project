@@ -15,6 +15,14 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+         if(this.cone){
+             this.cone.maskShape.x = this.x;
+             this.cone.maskShape.y = this.y;
+            this.cone.x = this.x;
+            this.cone.y = this.y;
+            //console.log(this.cone.body.touching);
+         }
+
         if(this.path && !this.isTrailing){
             this.scene.physics.moveTo(this, 
                 this.path.x + this.getDestination().x,
@@ -102,14 +110,18 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             Math.abs(this.x - this.lastPositionX) > 
             Math.abs(this.y - this.lastPositionY)) {
             this.facing = "right";
+            this.cone.angle = 45;
         } else if (this.x < this.lastPositionX && 
             Math.abs(this.x - this.lastPositionX) > 
             Math.abs(this.y - this.lastPositionY)) {
             this.facing = "left";
+            this.cone.angle = -135;
         } else if (this.y < this.lastPositionY) {
             this.facing = "up";
+            this.cone.angle = -45;
         } else if (this.y > this.lastPositionY) {
             this.facing = "down";
+            this.cone.angle = 135;
         }
         this.lastPositionX = this.x;
         this.lastPositionY = this.y;

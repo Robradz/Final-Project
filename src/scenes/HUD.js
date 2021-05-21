@@ -1,7 +1,6 @@
 class HUD extends Phaser.Scene {
     constructor() {
         super("HUDScene");
-        console.log("ww");
         this.returnScene;
     }
 

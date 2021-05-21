@@ -7,6 +7,7 @@ class Tutorial extends Phaser.Scene {
         this.load.image('Tilemap.png', 'assets/Tilemap.png');
         this.load.image('player', 'assets/scientist.png');
         this.load.image('enemy', 'assets/temp_enemy.png');
+        this.load.image('sector', 'assets/sector.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tempmap.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
     }
@@ -41,14 +42,23 @@ class Tutorial extends Phaser.Scene {
                      this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
         this.enemy1.depth = 10;
         this.enemy1.path = this.enemy1path;
+        this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
+                     this.enemy1.y, 'sector')
+        
         this.add.existing(this.player);
         this.physics.add.existing(this.player);
         this.add.existing(this.enemy1);
         this.physics.add.existing(this.enemy1);
+        this.add.existing(this.enemy1.cone);
+        this.physics.add.existing(this.enemy1.cone);
+        this.enemy1.cone.body.setCircle(30);
+        this.enemy1.cone.body.height = 30;
+        this.enemy1.cone.body.setOffset(30,30);
+        console.log(this.enemy1.cone.body);
         
         this.cameras.main.startFollow(this.player, false, 0.08, 0.08, 0, 0);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.obstacles.setCollisionByProperty({ collides: true });
+        //this.obstacles.setCollisionByProperty({ collides: true });
         this.obstacles.setCollisionByExclusion([-1]);
         this.physics.add.collider(this.player, this.obstacles);
         this.physics.add.collider(this.player, this.enemy1, (player, enemy1)=>{
