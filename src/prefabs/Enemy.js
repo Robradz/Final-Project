@@ -87,35 +87,40 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    detectionAngle(ex, ey, px, py) {
-        return Math.acos(py-ey / px-ex);
+    getTagetFacing(target) {
+        let angle = Math.atan2( this.y - target.y, this.x - target.x);
+        if((angle < Math.PI * (3/4) && angle > Math.PI * (1/4))){
+            return "up";
+        }
+        if((angle > Math.PI * (-3/4) && angle < Math.PI * (-1/4))){
+            return "down";
+        }
+        if((angle < Math.PI && angle > Math.PI * (3/4))||
+        (angle < Math.PI * -(1/4) && angle > -Math.PI)){
+            return "right";
+        }
+        if((angle < Math.PI * (1/4) && angle > 0)||
+        (angle < 0 && angle > Math.PI * -(1/4))){
+            return "left";
+        }
     }
 
     checkCone() {
         if (this.distanceBetween(this.x, this.y, this.player.x, this.player.y) 
-            > this.detectionDistance) { return; }
-
-        if (this.facing == "right" && this.player.x > this.x &&
-            Math.abs(this.player.y - this.y) < 
-            Math.abs(this.player.x - this.x)) {
+            > this.visableDistance) { return; }
+        if (this.facing == "right" == this.getTagetFacing(this.player)) {
             console.warn("Player caught by cone facing right");
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
-        } else if (this.facing == "left" && this.player.x < this.x &&
-            Math.abs(this.player.y - this.y) < 
-            Math.abs(this.player.x - this.x)) {
+        } else if (this.facing == "left" == this.getTagetFacing(this.player)) {
             console.warn("Player caught by cone facing left");
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
-        } else if (this.facing == "up" && this.player.y < this.y &&
-            Math.abs(this.player.y - this.y) > 
-            Math.abs(this.player.x - this.x)) {
+        } else if (this.facing == "up" == this.getTagetFacing(this.player)) {
             console.warn("Player caught by cone facing up");
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
-        } else if (this.facing == "down" && this.player.y > this.y &&
-            Math.abs(this.player.y - this.y) > 
-            Math.abs(this.player.x - this.x)) {
+        } else if (this.facing == "down" == this.getTagetFacing(this.player)) {
             console.warn("Player caught by cone facing down");
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
