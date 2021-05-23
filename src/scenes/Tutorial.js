@@ -64,6 +64,7 @@ class Tutorial extends Phaser.Scene {
         //this.obstacles.setCollisionByProperty({ collides: true });
         this.obstacles.setCollisionByExclusion([-1]);
         this.physics.add.collider(this.player, this.obstacles);
+        this.physics.add.overlap(this.enemy1.cone, this.player);
         this.physics.add.collider(this.player, this.enemy1, (player, enemy1)=>{
             this.paused = true;
             this.scene.pause();

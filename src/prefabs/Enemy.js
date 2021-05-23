@@ -83,7 +83,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.checkRadius();
         }
         if (this.player.state != "invisible") {
-            this.checkCone();
+            if(!this.cone.body.touching.none){
+                this.checkCone();
+                
+            }
+            
         }
     }
 
@@ -106,24 +110,26 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     checkCone() {
-        if (this.distanceBetween(this.x, this.y, this.player.x, this.player.y) 
-            > this.visableDistance) { return; }
-        if (this.facing == "right" == this.getTagetFacing(this.player)) {
-            console.warn("Player caught by cone facing right");
+        // if (this.distanceBetween(this.x, this.y, this.player.x, this.player.y) 
+        //     > this.visableDistance) { return; }
+        if(this.facing == this.getTagetFacing(this.player)){
+            if (this.facing == "right") {
+               console.warn("Player caught by cone facing right");
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
-        } else if (this.facing == "left" == this.getTagetFacing(this.player)) {
-            console.warn("Player caught by cone facing left");
-            game.prompt.text = "the alien got attracted";
+            } else if (this.facing == "left") {
+               console.warn("Player caught by cone facing left");
+               game.prompt.text = "the alien got attracted";
+              this.isTrailing = true;
+         } else if (this.facing == "up") {
+               console.warn("Player caught by cone facing up");
+               game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
-        } else if (this.facing == "up" == this.getTagetFacing(this.player)) {
-            console.warn("Player caught by cone facing up");
-            game.prompt.text = "the alien got attracted";
-            this.isTrailing = true;
-        } else if (this.facing == "down" == this.getTagetFacing(this.player)) {
-            console.warn("Player caught by cone facing down");
-            game.prompt.text = "the alien got attracted";
-            this.isTrailing = true;
+         } else if (this.facing == "down") {
+                console.warn("Player caught by cone facing down");
+              game.prompt.text = "the alien got attracted";
+              this.isTrailing = true;
+            }
         }
     }
 
