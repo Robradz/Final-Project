@@ -57,13 +57,14 @@ class Tutorial extends Phaser.Scene {
         this.enemy1.colCone.alpha = 0;
         this.enemy1.cone.body.setCircle(30);
         this.enemy1.cone.body.setOffset(30,30);
-        this.enemy1.colCone.body.setCircle(60);
-        //this.enemy1.colCone.body.setOffset(30,30);
+        this.enemy1.colCone.body.setCircle(0);
+        this.enemy1.colCone.body.setOffset(60,60);
         this.cameras.main.startFollow(this.player, false, 0.08, 0.08, 0, 0);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         //this.obstacles.setCollisionByProperty({ collides: true });
         this.obstacles.setCollisionByExclusion([-1]);
         this.physics.add.collider(this.player, this.obstacles);
+        this.physics.add.overlap(this.enemy1.cone, this.player);
         this.physics.add.collider(this.player, this.enemy1, (player, enemy1)=>{
             this.paused = true;
             this.scene.pause();
@@ -73,7 +74,10 @@ class Tutorial extends Phaser.Scene {
             this.player.y = this.spawnXY.y;
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
-        this.physics.add.collider(this.enemy1.colCone, this.obstacles);
+        this.physics.add.collider(this.enemy1.colCone, this.obstacles, 
+            (colCone, obstacles)=>{
+                
+            });
         // This launches the pause screen whenever ESC is pressed
         window.addEventListener('keydown', (e) => this.checkPause(e.key));
         this.scene.launch("HUDScene");
