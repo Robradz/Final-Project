@@ -23,6 +23,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             invisibility : true, 
             slowTime : true
         }
+        this.timers = {
+            dash : null,
+            teleport : null,
+            invisibility : null
+        }
+
+        this.teleporterPosition = {x : 0, y : 0};
+        this.tpSprite;
+
+        // temporary until a teleporter texture exists
+        this.texture = texture;
     }
 
     update() {
@@ -41,46 +52,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    // TODO: Make this check that the location works
+    placeTeleporter() {
+        this.teleporterPosition.x = this.x;
+        this.teleporterPosition.y = this.y;
+        if (this.tpSprite) {
+
+            this.tpSprite = this.scene.make.sprite(
+                this.teleporterPosition.x, 
+                this.teleporterPosition.y,
+                this.texture);
+        }
+        console.log (this.teleporterPosition.x, 
+            this.teleporterPosition.y);
+    }
+
     teleport(){
         if (this.ready.teleport) {
-            this.state = "teleporting";
-            this.ready.teleport = false;
-            this.scene.time.delayedCall(
-                this.cooldowns.teleport, 
-                () => { this.ready.teleport = true; }, 
-                [], this.scene );
-            switch(this.facing) {
-                case "upLeft":
-                    this.x -= this.teleportDistance / Math.sqrt(2);
-                    this.y -= this.teleportDistance / Math.sqrt(2);
-                    break;
-                case "upRight":
-                    this.x += this.teleportDistance / Math.sqrt(2);
-                    this.y -= this.teleportDistance / Math.sqrt(2);
-                    break;
-                case "downLeft":
-                    this.x += this.teleportDistance / Math.sqrt(2);
-                    this.y -= this.teleportDistance / Math.sqrt(2);
-                    break;
-                case "downRight":
-                    this.x += this.teleportDistance / Math.sqrt(2);
-                    this.y += this.teleportDistance / Math.sqrt(2);
-                    break;
-                case "up":
-                    this.y -= this.teleportDistance;
-                    break;
-                case "left":
-                    this.x -= this.teleportDistance;
-                    break;
-                case "down":
-                    this.y += this.teleportDistance;
-                    break;
-                case "right":
-                    this.x += this.teleportDistance;
-                    break;
-            }
-            this.state = "idle";
+            this.x = this.teleporterPosition.x;
+            this.y = this.teleporterPosition.y;
         }
     }
 
@@ -89,7 +78,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.state = "invisible";
             this.alpha = 0;
             this.ready.invisibility = false;
-            this.scene.time.delayedCall(
+            this.timers.invisibility = this.scene.time.delayedCall(
                 this.cooldowns.invisibility, 
                 () => { 
                     this.ready.invisibility = true; 
@@ -108,22 +97,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.dash();
                 break;
             case "q": // Q ASCII code = 81
-                this.teleport();
+                this.invisibility();
                 break;
             case "e": // E ASCII code = 69
-                this.invisibility();
+                this.placeTeleporter();
                 break;
             case "r": // R ASCII code = 82
-                this.slowTime();
-                break;
-            case "Q": // Q ASCII code = 81
                 this.teleport();
                 break;
-            case "E": // E ASCII code = 69
+            case "Q": // Q ASCII code = 81
                 this.invisibility();
                 break;
+            case "E": // E ASCII code = 69
+                this.placeTeleporter();
+                break;
             case "R": // R ASCII code = 82
-                this.slowTime();
+                this.teleport();
                 break;
         }
     }
