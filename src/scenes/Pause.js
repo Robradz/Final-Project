@@ -48,17 +48,11 @@ class Pause extends Phaser.Scene {
             () => { this.menuButton.setStyle({ fill: '#0ff'}) });
         this.menuButton.on('pointerup', 
             () => { console.log("yo whats going on"); 
+            let curr = this.scene.get(currentLevel);
+            curr.paused = false;
             this.scene.stop(currentLevel);
             this.scene.stop("HUDScene");
-            this.scene.start('menuScene');
-            this.scene.stop('pauseScene'); });
-    }
-
-    checkPause(key) {
-        
-    }
-
-    update() {
-
+            this.scene.start('menuScene'); 
+            this.scene.stop('pauseScene')} );
     }
 }

@@ -121,7 +121,7 @@ class Tutorial extends Phaser.Scene {
             this.scene.launch("pauseScene");
         } else if (key == "Escape" && this.paused) {
             this.paused = false;
-            console.log("Paused: " + this.paused);
+            console.log("hello Paused: " + this.paused);
             this.scene.stop("pauseScene");
             this.scene.resume("tutorialScene");
         }
