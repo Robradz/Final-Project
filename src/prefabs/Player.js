@@ -34,9 +34,35 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // temporary until a teleporter texture exists
         this.texture = texture;
+
+        this.create();
+        //this.teleportTimer = this.add.graphics({x: 50, y: game.config.width/2});
+        //this.invisibilityTimer = this.add.graphics({x: 50, y: game.config.width/2+100});
+    }
+
+    create() {
+        this.dashTimer = this.scene.add.graphics({
+            x: game.config.height/2, 
+            y: game.config.width/2,
+            add: true});
+        this.dashTimer.depth = 10;
+        console.log(this.dashTimer);
     }
 
     update() {
+        if (this.timers.dash != null && this.timers.dash.getProgress() < 1) {
+            this.dashTimer.fillStyle(0xFF0000, 1);
+            // this.dashTimer.fillRect(50, game.config.width/2-100,
+            //     50, 50 * this.timers.dash.getProgress());
+            this.dashTimer.fillRect(300, 300, 300, 300);
+            console.log(this.timers.dash.getProgress());
+        }
+        // if (this.timers.teleport != null ) {
+        //     console.log(this.timers.teleport.getProgress());
+        // }
+        // if (this.timers.invisibility != null ) {
+        //     console.log(this.timers.invisibility.getProgress());
+        // }
         this.checkSneak();
         this.manageMovement();
     }
@@ -45,10 +71,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.ready.dash) {
             this.state = "dashing";
             this.ready.dash = false;
-            this.scene.time.delayedCall(
+            this.timers.dash = this.scene.time.delayedCall(
                 this.cooldowns.dash, 
                 () => { this.ready.dash = true; }, 
                 [], this.scene );
+            console.log(this.dashTimer);
         }
     }
 
@@ -62,14 +89,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.teleporterPosition.y,
                 this.texture);
         }
-        console.log (this.teleporterPosition.x, 
-            this.teleporterPosition.y);
     }
 
-    teleport(){
+    teleport() {
         if (this.ready.teleport) {
             this.x = this.teleporterPosition.x;
             this.y = this.teleporterPosition.y;
+            this.state = "teleporting";
+            this.ready.teleport = false;
+            this.timers.teleport = this.scene.time.delayedCall(
+                this.cooldowns.teleport, 
+                () => { this.ready.teleport = true; }, 
+                [], this.scene);
         }
     }
 
@@ -83,7 +114,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 () => { 
                     this.ready.invisibility = true; 
                     this.alpha = 1}, 
-                [], this.scene );
+                    [], this.scene );
         }
     }
 
@@ -132,7 +163,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     manageMovement() {
-        if (this.state == "teleporting") { return; }
         if (this.state == "dashing") {
             this.movementSpeed = 200;
             
