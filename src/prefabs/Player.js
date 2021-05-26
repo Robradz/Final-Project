@@ -41,21 +41,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     create() {
-        this.dashTimer = this.scene.add.graphics({
-            x: game.config.height/2, 
-            y: game.config.width/2,
-            add: true});
+        this.dashTimer = new Phaser.GameObjects.Graphics(this.scene, 
+            {x: 300, y: 300, add: true});
+        this.scene.add.existing(this.dashTimer);
+        // this.dashTimer = this.scene.add.graphics({
+        //     x: game.config.height/2, 
+        //     y: game.config.width/2,
+        //     add: true});
         this.dashTimer.depth = 10;
         console.log(this.dashTimer);
     }
 
     update() {
         if (this.timers.dash != null && this.timers.dash.getProgress() < 1) {
+            this.dashTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
             this.dashTimer.fillStyle(0xFF0000, 1);
             // this.dashTimer.fillRect(50, game.config.width/2-100,
             //     50, 50 * this.timers.dash.getProgress());
             this.dashTimer.fillRect(300, 300, 300, 300);
-            console.log(this.timers.dash.getProgress());
+            this.scene.add.existing(this.dashTimer);
         }
         // if (this.timers.teleport != null ) {
         //     console.log(this.timers.teleport.getProgress());
