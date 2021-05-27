@@ -15,18 +15,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             dash : parseInt(5000),
             teleport : parseInt(5000),
             invisibility : parseInt(5000), 
-            slowTime : parseInt(5000)
         }
         this.ready = {
             dash : true,
             teleport : true,
             invisibility : true, 
-            slowTime : true
         }
         this.timers = {
             dash : null,
             teleport : null,
             invisibility : null
+        }
+        this.count = {
+            dash : Infinity,
+            teleport : 2,
+            invisibility : 2
         }
 
         this.teleporterPosition = {x : 0, y : 0};
@@ -96,7 +99,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     teleport() {
-        if (this.ready.teleport) {
+        if (this.ready.teleport && this.count.teleport > 0) {
+            this.count.teleport--;
             this.x = this.teleporterPosition.x;
             this.y = this.teleporterPosition.y;
             this.state = "teleporting";
@@ -109,7 +113,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     invisibility() {
-        if (this.ready.invisibility) {
+        if (this.ready.invisibility && this.count.invisibility > 0) {
+            this.count.invisibility--;
             this.state = "invisible";
             this.alpha = 0;
             this.ready.invisibility = false;
