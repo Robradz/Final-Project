@@ -1,9 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="19">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="24">
  <editorsettings>
   <export target="Tiled_tutorial..json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="tutorial.tsx"/>
+ <tileset firstgid="1" name="tutorial" tilewidth="64" tileheight="96" tilecount="23" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="1">
+   <image width="16" height="16" source="tileSprites/smallVent.png"/>
+  </tile>
+  <tile id="2">
+   <image width="32" height="32" source="tileSprites/tile_floor.png"/>
+  </tile>
+  <tile id="4">
+   <image width="64" height="32" source="tileSprites/ventDuctCorner.png"/>
+  </tile>
+  <tile id="6">
+   <image width="64" height="64" source="tileSprites/wall_front.png"/>
+  </tile>
+  <tile id="7">
+   <image width="32" height="64" source="tileSprites/wall_front_innerCorner_L.png"/>
+  </tile>
+  <tile id="8">
+   <image width="32" height="64" source="tileSprites/wall_front_middle.png"/>
+  </tile>
+  <tile id="9">
+   <image width="32" height="64" source="tileSprites/wall_front_outerCorner_L.png"/>
+  </tile>
+  <tile id="10">
+   <image width="32" height="32" source="tileSprites/wall_top_back.png"/>
+  </tile>
+  <tile id="11">
+   <image width="32" height="32" source="tileSprites/wall_top_backCorner_L.png"/>
+  </tile>
+  <tile id="12">
+   <image width="32" height="32" source="tileSprites/background.png"/>
+  </tile>
+  <tile id="13">
+   <image width="32" height="32" source="tileSprites/bigVent.png"/>
+  </tile>
+  <tile id="14">
+   <image width="64" height="64" source="tileSprites/cell_floor.png"/>
+  </tile>
+  <tile id="15">
+   <image width="32" height="32" source="tileSprites/crate.png"/>
+  </tile>
+  <tile id="18">
+   <image width="64" height="32" source="tileSprites/mediumVent_middle.png"/>
+  </tile>
+  <tile id="19">
+   <image width="32" height="96" source="tileSprites/sideGate.png"/>
+  </tile>
+  <tile id="20">
+   <image width="64" height="32" source="tileSprites/ventDuctExit.png"/>
+  </tile>
+  <tile id="21">
+   <image width="32" height="32" source="tileSprites/ventDuct.png"/>
+  </tile>
+  <tile id="23">
+   <image width="32" height="32" source="tileSprites/sideVent.png"/>
+  </tile>
+  <tile id="24">
+   <image width="32" height="32" source="tileSprites/ventDuctCorner_normal.png"/>
+  </tile>
+  <tile id="25">
+   <image width="32" height="64" source="tileSprites/openDoor.png"/>
+  </tile>
+  <tile id="26">
+   <image width="32" height="64" source="tileSprites/closedDoor.png"/>
+  </tile>
+  <tile id="27">
+   <image width="64" height="32" source="tileSprites/table.png"/>
+  </tile>
+  <tile id="30">
+   <image width="64" height="32" source="tileSprites/wallLight.png"/>
+  </tile>
+ </tileset>
  <layer id="4" name="Background" width="32" height="32">
   <data encoding="csv">
 13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,
@@ -154,9 +225,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,31,0,0,0,31,0,0,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27,0,0,0,0,16,0,0,16,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2147483668,0,0,0,16,0,0,0,0,0,0,
+0,0,0,0,0,19,0,0,0,31,0,0,0,31,0,0,0,0,0,0,31,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,19,0,0,0,0,0,0,0,27,0,0,0,0,16,0,0,16,0,0,0,0,0,0,
+0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,2147483668,0,0,0,16,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -184,19 +255,26 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="5" name="vent_1">
-  <object id="3" x="320.5" y="183">
+ <objectgroup id="5" name="Events">
+  <properties>
+   <property name="out" value="1"/>
+  </properties>
+  <object id="3" name="VentOut1" type="2" x="321.167" y="211.667">
    <point/>
   </object>
-  <object id="4" x="194.5" y="151">
+  <object id="4" name="VentIn1" type="1" x="191.833" y="149">
    <point/>
   </object>
- </objectgroup>
- <objectgroup id="6" name="vent_2">
-  <object id="14" x="292.333" y="454.5" rotation="90">
+  <object id="19" name="Respawn" x="190.667" y="201.333">
    <point/>
   </object>
-  <object id="15" x="536" y="460.5">
+  <object id="20" name="Exit" x="558.667" y="672.667">
+   <point/>
+  </object>
+  <object id="22" name="VentIn2" type="2" x="295.333" y="462">
+   <point/>
+  </object>
+  <object id="23" name="VentOut2" type="2" x="560" y="595.333">
    <point/>
   </object>
  </objectgroup>
