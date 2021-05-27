@@ -66,14 +66,46 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         if(this.isTrailing){
-            if(Math.abs(this.player.x - this.x) > 2){
-                this.setVelocity(0, 0);
-                this.scene.physics.moveToObject(this, this.player, this.movementSpeed);
-                this.body.setVelocityY(0);
-            }else if(Math.abs(this.player.y - this.y) > 2){
-                this.setVelocity(0, 0);
-                this.scene.physics.moveToObject(this, this.player, this.movementSpeed);
-                this.body.setVelocityX(0);
+            if(Math.abs(this.player.body.velocity.x) 
+                    == Math.abs(this.player.body.velocity.y)){
+                if(Math.abs(this.player.x - this.x) > 2){
+                    this.setVelocity(0, 0);
+                    this.body.setVelocityY(0);
+                    if(this.player.x - this.x > 0){
+                        this.body.setVelocityX(this.movementSpeed);
+                    }else{
+                        this.body.setVelocityX(-this.movementSpeed);
+                    }
+                }
+                if(Math.abs(this.player.y - this.y) > 2){
+                    this.setVelocity(0, 0);
+                    this.body.setVelocityX(0);
+                    if(this.player.y - this.y > 0){
+                        this.body.setVelocityY(this.movementSpeed);
+                    }else{
+                        this.body.setVelocityY(-this.movementSpeed);
+                    }
+                }
+            }else{
+                //console.log(this.player.body.velocity.x, this.player.body.velocity.y);
+                if(Math.abs(this.player.x - this.x) > Math.abs(this.player.y - this.y)){
+                    this.setVelocity(0, 0);
+                    this.body.setVelocityY(0);
+                    if(this.player.x - this.x > 0){
+                        this.body.setVelocityX(this.movementSpeed);
+                    }else{
+                        this.body.setVelocityX(-this.movementSpeed);
+                    }
+                }
+            if(Math.abs(this.player.y - this.y) > Math.abs(this.player.x - this.x)){
+                    this.setVelocity(0, 0);
+                    this.body.setVelocityX(0);
+                    if(this.player.y - this.y > 0){
+                        this.body.setVelocityY(this.movementSpeed);
+                    }else{
+                        this.body.setVelocityY(-this.movementSpeed);
+                    }
+                }
             }
         }
 

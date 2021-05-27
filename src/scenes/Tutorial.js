@@ -13,7 +13,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
-        
+        this.paused = false;
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -21,6 +21,7 @@ class Tutorial extends Phaser.Scene {
         keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        currentLevel = 'tutorialScene';
 
         const map = this.make.tilemap({ key: 'tilesets' });
         const tileset = map.addTilesetImage('tilesets', 'Tilemap.png');

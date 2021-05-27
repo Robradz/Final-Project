@@ -22,3 +22,5 @@ let game = new Phaser.Game(config);
 // Declare Keys (Change if needed)
 let keyA, keyD, keyW, keyS, keyE, keyF, keyQ, keyR, keySPACE, keyESC, keySHIFT;
 let cursors;
+
+let currentLevel;
