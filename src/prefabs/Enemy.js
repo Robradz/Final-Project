@@ -4,7 +4,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         this.detectionRadius = 30;
         this.detectionDistance = 60;
-        this.visableDistance = this.detectionDistance;
+        this.visableDistance = 0;
         this.movementSpeed = 30;
         this.facing = "right";
         this.player = scene.player;

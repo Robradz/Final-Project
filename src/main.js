@@ -1,6 +1,7 @@
 "use strict";
 let config = {
-    type: Phaser.CANVAS,
+    type: Phaser.WEBGL,
+    //canvas mode causing rendering bugs, weird 
     width: 1024,
     height: 576,
       fps: {
