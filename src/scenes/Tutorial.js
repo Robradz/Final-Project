@@ -80,11 +80,13 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.overlap(this.enemy1.cone, this.player);
         this.physics.add.collider(this.player, this.enemy1, (player, enemy1)=>{
             this.paused = true;
-            this.scene.pause();
-            this.scene.launch("pauseScene");
-            game.prompt.text = "YOU GOT CAUGHT!";
+            // this.scene.pause();
+            // this.scene.launch("pauseScene");
+            this.scene.restart();
+            //game.prompt.text = "YOU GOT CAUGHT!";
             this.player.x = this.spawnXY.x;
             this.player.y = this.spawnXY.y;
+            this.player.sfx.stop();
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
         this.physics.add.collider(this.enemy1.colCone, this.obstacles, 
