@@ -14,13 +14,7 @@ class Tutorial extends Phaser.Scene {
 
     create() {
         this.paused = false;
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        this.DefineInputs();
         currentLevel = 'tutorialScene';
 
         const map = this.make.tilemap({ key: 'tilesets' });
@@ -44,16 +38,51 @@ class Tutorial extends Phaser.Scene {
         console.log(this.enemy1path);
         this.objects = map.createLayer('Object', tileset);
         
+        // Phyiscs Bodies include player, enemies, enemy detections
+        this.CreatePhysicsBodies();
+
+        //this.enemy1.cone.body.setCircle(30);
+        //this.enemy1.cone.body.setOffset(30,30);
+
+        // Sets up camera zoom, allows it to follow player
+        this.SetCamera(map);
+        
+        // Sets up all collisions between player, enemy, obstacles
+        this.CreateCollisionEvents();
+
+
+        // This launches the pause screen whenever ESC is pressed
+        window.addEventListener('keydown', (e) => this.checkPause(e.key));
+        map.createLayer('Overhead', tileset);
+        this.scene.launch("HUDScene");
+    }
+
+    DefineInputs() {
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+    }
+
+    SetCamera(map) {
         this.cameras.main.setZoom(2);
+        this.cameras.main.startFollow(this.player, false, 0.08, 0.08, 0, 0);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    }
+
+    CreatePhysicsBodies() {
         this.player = new Player(this, this.spawnXY.x, this.spawnXY.y, 'player');
         this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
-                     this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
+            this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
         this.enemy1.depth = 10;
         this.enemy1.path = this.enemy1path;
         this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-                     this.enemy1.y, 'sector')
+            this.enemy1.y, 'sector');
         this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-                    this.enemy1.y, 'sector')
+            this.enemy1.y, 'sector');
         this.add.existing(this.player);
         this.physics.add.existing(this.player);
         this.add.existing(this.enemy1);
@@ -63,14 +92,13 @@ class Tutorial extends Phaser.Scene {
         this.add.existing(this.enemy1.colCone);
         this.physics.add.existing(this.enemy1.colCone);
         this.enemy1.colCone.alpha = 0;
-        this.player.body.setSize(16,8);
-        this.player.body.setOffset(8,22);
-        this.enemy1.body.setSize(16,8);
-        this.enemy1.body.setOffset(8,22);
-        //this.enemy1.cone.body.setCircle(30);
-        //this.enemy1.cone.body.setOffset(30,30);
-        this.cameras.main.startFollow(this.player, false, 0.08, 0.08, 0, 0);
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.player.body.setSize(16, 8);
+        this.player.body.setOffset(8, 22);
+        this.enemy1.body.setSize(16, 8);
+        this.enemy1.body.setOffset(8, 22);
+    }
+
+    CreateCollisionEvents() {
         this.objects.setCollisionByProperty({ collides: true });
         this.obstacles.setCollisionByExclusion([-1]);
         this.objects.setCollisionByExclusion([-1]);
@@ -78,7 +106,7 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.player, this.objects);
         //this.physics.add.collider(this.enemy1, this.objects);
         this.physics.add.overlap(this.enemy1.cone, this.player);
-        this.physics.add.collider(this.player, this.enemy1, (player, enemy1)=>{
+        this.physics.add.collider(this.player, this.enemy1, (player, enemy1) => {
             this.paused = true;
             // this.scene.pause();
             // this.scene.launch("pauseScene");
@@ -89,14 +117,9 @@ class Tutorial extends Phaser.Scene {
             this.player.sfx.stop();
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
-        this.physics.add.collider(this.enemy1.colCone, this.obstacles, 
-            (colCone, obstacles)=>{
-                
+        this.physics.add.collider(this.enemy1.colCone, this.obstacles,
+            (colCone, obstacles) => {
             });
-        // This launches the pause screen whenever ESC is pressed
-        window.addEventListener('keydown', (e) => this.checkPause(e.key));
-        map.createLayer('Overhead', tileset);
-        this.scene.launch("HUDScene");
     }
 
     stopDash() {
