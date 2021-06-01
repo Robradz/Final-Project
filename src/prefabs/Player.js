@@ -15,18 +15,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             dash : parseInt(5000),
             teleport : parseInt(5000),
             invisibility : parseInt(5000), 
-            slowTime : parseInt(5000)
         }
         this.ready = {
             dash : true,
             teleport : true,
             invisibility : true, 
-            slowTime : true
         }
         this.timers = {
             dash : null,
             teleport : null,
             invisibility : null
+        }
+        this.count = {
+            dash : Infinity,
+            teleport : 2,
+            invisibility : 2
         }
 
         this.teleporterPosition = {x : 0, y : 0};
@@ -34,9 +37,66 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // temporary until a teleporter texture exists
         this.texture = texture;
+
+        this.create();
+    }
+
+    create() {
+        this.sfx.stop();
+        this.scene.sound.stopAll();
+        this.scene.playMusic();
+
+        this.HUDScene = this.scene.scene.get('HUDScene');
+
+        // Shows a timer on the HUD for when abilities are ready
+        // To be used.
+        // Dash timer graphic:
+        this.dashTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
+            {x: 300, y: 300, add: true});
+        this.HUDScene.add.existing(this.dashTimer);
+        this.dashTimer.depth = 10;
+
+        // Teleport timer graphic:
+        this.invisibilityTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
+            {x: 300, y: 300, add: true});
+        this.HUDScene.add.existing(this.invisibilityTimer);
+        this.invisibilityTimer.depth = 10;
+
+        // Invisibility timer graphic:
+        this.teleportTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
+            {x: 300, y: 300, add: true});
+        this.HUDScene.add.existing(this.teleportTimer);
+        this.teleportTimer.depth = 10;
     }
 
     update() {
+        // Updates the dash timer on HUD
+        if (this.timers.dash != null && this.timers.dash.getProgress() < 1) {
+            this.dashTimer.fillRectShape({x: 300, y: 300, width: 300, height: 300});
+            this.dashTimer.fillStyle(0xFF0000, 1);
+            this.dashTimer.fillRect(-250, -150,
+                50 * this.timers.dash.getProgress(), 8);
+            this.HUDScene.add.existing(this.dashTimer);
+        }
+
+        // Updates invisibility timer on HUD
+        if (this.timers.invisibility != null && this.timers.invisibility.getProgress() < 1) {
+            this.invisibilityTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
+            this.invisibilityTimer.fillStyle(0xFF0000, 1);
+            this.invisibilityTimer.fillRect(-250, 0,
+                50 * this.timers.invisibility.getProgress(), 8);
+            this.HUDScene.add.existing(this.invisibilityTimer);
+        }
+
+        // Updates teleport timer on HUD
+        if (this.timers.teleport != null && this.timers.teleport.getProgress() < 1) {
+            this.teleportTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
+            this.teleportTimer.fillStyle(0xFF0000, 1);
+            this.teleportTimer.fillRect(-250, 150,
+                50 * this.timers.teleport.getProgress(), 8);
+            this.HUDScene.add.existing(this.teleportTimer);
+        }
+
         this.checkSneak();
         this.manageMovement();
     }
@@ -45,36 +105,55 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.ready.dash) {
             this.state = "dashing";
             this.ready.dash = false;
-            this.scene.time.delayedCall(
+            this.timers.dash = this.scene.time.delayedCall(
                 this.cooldowns.dash, 
                 () => { this.ready.dash = true; }, 
                 [], this.scene );
+            
+            this.dashTimer.destroy();
+            this.dashTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
+                {x: 300, y: 300, add: true});
         }
     }
 
     placeTeleporter() {
         this.teleporterPosition.x = this.x;
         this.teleporterPosition.y = this.y;
-        if (this.tpSprite) {
-
-            this.tpSprite = this.scene.make.sprite(
+        if (!this.tpSprite) {
+            this.tpSprite = new Phaser.GameObjects.Sprite(
+                this.scene,
                 this.teleporterPosition.x, 
                 this.teleporterPosition.y,
                 this.texture);
+            this.scene.add.existing(this.tpSprite);
         }
-        console.log (this.teleporterPosition.x, 
-            this.teleporterPosition.y);
+        else {
+            this.tpSprite.x = this.teleporterPosition.x;
+            this.tpSprite.y = this.teleporterPosition.y;
+        }
     }
 
-    teleport(){
-        if (this.ready.teleport) {
+    teleport() {
+        if (this.ready.teleport && this.count.teleport > 0) {
+            this.count.teleport--;
             this.x = this.teleporterPosition.x;
             this.y = this.teleporterPosition.y;
+            this.state = "teleporting";
+            this.ready.teleport = false;
+            this.timers.teleport = this.scene.time.delayedCall(
+                this.cooldowns.teleport, 
+                () => { this.ready.teleport = true; }, 
+                [], this.scene);
+
+            this.teleportTimer.destroy();
+            this.teleportTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
+                {x: 300, y: 300, add: true});
         }
     }
 
     invisibility() {
-        if (this.ready.invisibility) {
+        if (this.ready.invisibility && this.count.invisibility > 0) {
+            this.count.invisibility--;
             this.state = "invisible";
             this.alpha = 0;
             this.ready.invisibility = false;
@@ -83,7 +162,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 () => { 
                     this.ready.invisibility = true; 
                     this.alpha = 1}, 
-                [], this.scene );
+                    [], this.scene );
+
+            this.invisibilityTimer.destroy();
+            this.invisibilityTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
+                {x: 300, y: 300, add: true});
         }
     }
 
@@ -132,7 +215,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     manageMovement() {
-        if (this.state == "teleporting") { return; }
         if (this.state == "dashing") {
             this.movementSpeed = 200;
             

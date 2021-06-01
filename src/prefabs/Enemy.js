@@ -33,15 +33,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.detectionDistance - this.visableDistance, 
                 this.detectionDistance - this.visableDistance);
              
-         if(this.colCone.body.blocked.none){
-             if(this.visableDistance < this.detectionDistance){
-                this.visableDistance += 0.2;
-             }
-         }else{
-            if(this.visableDistance > 0){
-                this.visableDistance -= 0.2;
-             }
-         }
+        //  if(this.colCone.body.blocked.none){
+        //      if(this.visableDistance < this.detectionDistance){
+        //         this.visableDistance += 0.2;
+        //      }
+        //  }else{
+        //     if(this.visableDistance > 0){
+        //         this.visableDistance -= 0.2;
+        //      }
+        //  }
          
             
          if(this.visableDistance != this.detectionDistance){
