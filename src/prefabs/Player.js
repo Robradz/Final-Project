@@ -44,6 +44,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     create() {
+        this.sfx.stop();
+        this.scene.sound.stopAll();
+        this.scene.playMusic();
         this.dashTimer = new Phaser.GameObjects.Graphics(this.scene, 
             {x: 300, y: 300, add: true});
         this.scene.add.existing(this.dashTimer);
