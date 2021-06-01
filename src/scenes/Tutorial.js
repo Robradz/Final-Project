@@ -10,6 +10,12 @@ class Tutorial extends Phaser.Scene {
         this.load.image('sector', 'assets/sector.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tutorial.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
+        this.load.audio('theme', './assets/title theme.wav');
+    }
+
+    playMusic() {
+        this.bgm = this.sound.add('theme',{volume: 1,loop:true});
+        this.bgm.play();
     }
 
     create() {
@@ -108,13 +114,10 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.overlap(this.enemy1.cone, this.player);
         this.physics.add.collider(this.player, this.enemy1, (player, enemy1) => {
             this.paused = true;
-            // this.scene.pause();
-            // this.scene.launch("pauseScene");
+            this.player.sfx.stop();
             this.scene.restart();
-            //game.prompt.text = "YOU GOT CAUGHT!";
             this.player.x = this.spawnXY.x;
             this.player.y = this.spawnXY.y;
-            this.player.sfx.stop();
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
         this.physics.add.collider(this.enemy1.colCone, this.obstacles,
