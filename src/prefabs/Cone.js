@@ -8,7 +8,7 @@ class Cone extends Phaser.Physics.Arcade.Sprite{
         this.maskShape.y = y;
         this.pseudoCircle = new Phaser.Geom.Circle(0, 0, distance);
         this.maskShape.fillCircleShape(this.pseudoCircle);
-        this.mask = new Phaser.Display.Masks.GeometryMask(this, this.maskShape);
+        //this.mask = new Phaser.Display.Masks.GeometryMask(this, this.maskShape);
         this.angle = -45;
     }
 
