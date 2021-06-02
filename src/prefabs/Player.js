@@ -8,6 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.state = "idle";
         this.facing = "right";
         this.scene = scene;
+        this.HUDScene = this.scene.scene.get('HUDScene');
         this.sfx = this.scene.sound.add('footsteps',{volume: 1,loop:true});
         window.addEventListener('keydown', (e) => this.manageAbilities(e.key));
         
@@ -32,11 +33,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             invisibility : 2
         }
 
-        this.teleporterPosition = {x : 0, y : 0};
+        this.teleporterPosition = {x : x, y : y};
         this.tpSprite;
 
-        // temporary until a teleporter texture exists
-        this.texture = texture;
+        this.scene.load.image('teleportSprite', 'assets/teleporter_abilitySprite.png');
+        this.tpTexture = 'teleportSprite';
 
         this.create();
     }
@@ -46,25 +47,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.sound.stopAll();
         this.scene.playMusic();
 
-        this.HUDScene = this.scene.scene.get('HUDScene');
-
         // Shows a timer on the HUD for when abilities are ready
         // To be used.
         // Dash timer graphic:
         this.dashTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
-            {x: 300, y: 300, add: true});
+            {x: 0, y: 0, add: true});
         this.HUDScene.add.existing(this.dashTimer);
         this.dashTimer.depth = 10;
 
         // Teleport timer graphic:
         this.invisibilityTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
-            {x: 300, y: 300, add: true});
+            {x: 0, y: 0, add: true});
         this.HUDScene.add.existing(this.invisibilityTimer);
         this.invisibilityTimer.depth = 10;
 
         // Invisibility timer graphic:
         this.teleportTimer = new Phaser.GameObjects.Graphics(this.HUDScene, 
-            {x: 300, y: 300, add: true});
+            {x: 0, y: 0, add: true});
         this.HUDScene.add.existing(this.teleportTimer);
         this.teleportTimer.depth = 10;
     }
@@ -73,8 +72,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Updates the dash timer on HUD
         if (this.timers.dash != null && this.timers.dash.getProgress() < 1) {
             this.dashTimer.fillRectShape({x: 300, y: 300, width: 300, height: 300});
-            this.dashTimer.fillStyle(0xFF0000, 1);
-            this.dashTimer.fillRect(-250, -150,
+            this.dashTimer.fillStyle(0x0099FF, 1);
+            this.dashTimer.fillRect(-250, 75,
                 50 * this.timers.dash.getProgress(), 8);
             this.HUDScene.add.existing(this.dashTimer);
         }
@@ -82,8 +81,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Updates invisibility timer on HUD
         if (this.timers.invisibility != null && this.timers.invisibility.getProgress() < 1) {
             this.invisibilityTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
-            this.invisibilityTimer.fillStyle(0xFF0000, 1);
-            this.invisibilityTimer.fillRect(-250, 0,
+            this.invisibilityTimer.fillStyle(0x0099FF, 1);
+            this.invisibilityTimer.fillRect(-250, 150,
                 50 * this.timers.invisibility.getProgress(), 8);
             this.HUDScene.add.existing(this.invisibilityTimer);
         }
@@ -91,8 +90,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Updates teleport timer on HUD
         if (this.timers.teleport != null && this.timers.teleport.getProgress() < 1) {
             this.teleportTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
-            this.teleportTimer.fillStyle(0xFF0000, 1);
-            this.teleportTimer.fillRect(-250, 150,
+            this.teleportTimer.fillStyle(0x0099FF, 1);
+            this.teleportTimer.fillRect(-250, 225,
                 50 * this.timers.teleport.getProgress(), 8);
             this.HUDScene.add.existing(this.teleportTimer);
         }
@@ -124,7 +123,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene,
                 this.teleporterPosition.x, 
                 this.teleporterPosition.y,
-                this.texture);
+                this.tpTexture);
             this.scene.add.existing(this.tpSprite);
         }
         else {
