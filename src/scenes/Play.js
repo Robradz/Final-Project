@@ -70,27 +70,27 @@ class Play extends Phaser.Scene {
 
     CreatePhysicsBodies() {
         this.player = new Player(this, this.spawnXY.x, this.spawnXY.y, 'player');
-        this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
-            this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
-        this.enemy1.depth = 10;
-        this.enemy1.path = this.enemy1path;
-        this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-            this.enemy1.y, 'sector');
-        this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-            this.enemy1.y, 'sector');
-        this.add.existing(this.player);
-        this.physics.add.existing(this.player);
-        this.add.existing(this.enemy1);
-        this.physics.add.existing(this.enemy1);
-        this.add.existing(this.enemy1.cone);
-        this.physics.add.existing(this.enemy1.cone);
-        this.add.existing(this.enemy1.colCone);
-        this.physics.add.existing(this.enemy1.colCone);
-        this.enemy1.colCone.alpha = 0;
-        this.player.body.setSize(16, 8);
-        this.player.body.setOffset(8, 22);
-        this.enemy1.body.setSize(16, 8);
-        this.enemy1.body.setOffset(8, 22);
+        // this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
+        //     this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
+        // this.enemy1.depth = 10;
+        // this.enemy1.path = this.enemy1path;
+        // this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
+        //     this.enemy1.y, 'sector');
+        // this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
+        //     this.enemy1.y, 'sector');
+        // this.add.existing(this.player);
+        // this.physics.add.existing(this.player);
+        // this.add.existing(this.enemy1);
+        // this.physics.add.existing(this.enemy1);
+        // this.add.existing(this.enemy1.cone);
+        // this.physics.add.existing(this.enemy1.cone);
+        // this.add.existing(this.enemy1.colCone);
+        // this.physics.add.existing(this.enemy1.colCone);
+        // this.enemy1.colCone.alpha = 0;
+        // this.player.body.setSize(16, 8);
+        // this.player.body.setOffset(8, 22);
+        // this.enemy1.body.setSize(16, 8);
+        // this.enemy1.body.setOffset(8, 22);
     }
 
     CreateCollisionEvents() {
@@ -124,7 +124,6 @@ class Play extends Phaser.Scene {
     update() {
         this.player.update();
         this.enemy1.update();
-        //console.log(this.player.x,this.player.y);
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
@@ -168,7 +167,7 @@ class Play extends Phaser.Scene {
             this.paused = false;
             console.log("Paused: " + this.paused);
             this.scene.stop("pauseScene");
-            this.scene.resume("tutorialScene");
+            this.scene.resume("level1");
         }
     }
 }
