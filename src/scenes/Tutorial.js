@@ -11,6 +11,8 @@ class Tutorial extends Phaser.Scene {
         this.load.tilemapTiledJSON('tilesets', 'assets/tutorial.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
         this.load.audio('theme', './assets/title theme.wav');
+        this.load.image('closedDoor', './assets/tileSprites/closedDoor.png')
+        this.load.image('openDoor', './assets/tileSprites/openDoor.png')
     }
 
     playMusic() {
@@ -102,6 +104,14 @@ class Tutorial extends Phaser.Scene {
         this.player.body.setOffset(8, 22);
         this.enemy1.body.setSize(16, 8);
         this.enemy1.body.setOffset(8, 22);
+
+        // this.closedDoor = new Phaser.Physics.Arcade.Sprite(
+        //     this, 500, 500, 'closedDoor');
+        // this.add.existing(this.closedDoor);
+        // this.door.setImmovable(true);
+
+        this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
+        this.closedDoor.setImmovable(true);
     }
 
     CreateCollisionEvents() {
@@ -121,8 +131,16 @@ class Tutorial extends Phaser.Scene {
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
         this.physics.add.collider(this.enemy1.colCone, this.obstacles,
-            (colCone, obstacles) => {
+            (colCone, obstacles) => {});
+        if (this.closedDoor) {
+            this.physics.add.collider(this.closedDoor, this.player, () => { 
+                if(keyF.isDown) { 
+                    this.closedDoor.destroy();
+                    this.openDoor = this.physics.add.image(500, 500, 'openDoor');
+                    this.openDoor.setImmovable(true);
+                }
             });
+        }
     }
 
     stopDash() {
