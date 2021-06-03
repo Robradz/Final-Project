@@ -56,7 +56,7 @@ class Menu extends Phaser.Scene {
         this.playButton.on('pointerout', 
             () => { this.playButton.setStyle({ fill: '#2080FF'}) });
         this.playButton.on('pointerup', 
-            () => { this.loadTutorialScene() });
+            () => { this.loadCurrentScene() });
 
         // TUTORIAL
         this.tutorialButton = this.add.text(
@@ -76,7 +76,7 @@ class Menu extends Phaser.Scene {
         this.tutorialButton.on('pointerout', 
             () => { this.tutorialButton.setStyle({ fill: '#2080FF'}) });
         this.tutorialButton.on('pointerup', 
-            () => { this.loadCurrentLevel(); });
+            () => { this.scene.start('tutorialScene'); });
 
         // Level Selection
         this.levelSelectButton = this.add.text(
@@ -96,7 +96,7 @@ class Menu extends Phaser.Scene {
         this.levelSelectButton.on('pointerout', 
             () => { this.levelSelectButton.setStyle({ fill: '#2080FF'}) });
         this.levelSelectButton.on('pointerup', 
-            () => { this.loadCurrentLevel(); });
+            () => { this.scene.start(currentLevel); });
 
         // Credits
         this.creditsButton = this.add.text(
@@ -116,28 +116,10 @@ class Menu extends Phaser.Scene {
         this.creditsButton.on('pointerout', 
             () => { this.creditsButton.setStyle({ fill: '#2080FF'}) });
         this.creditsButton.on('pointerup', 
-            () => { this.loadCurrentLevel(); });
+            () => { this.scene.start('creditsScene'); });
         
 
         this.bgm = this.sound.add('theme',{volume: 1,loop:true});
         this.bgm.play();
-    }
-
-    // WHEN A LEVEL IS DONE, REPLACE WITH COMMENTED CODE
-    loadPlayScene() {
-        //this.scene.start('playScene');
-        this.scene.start('tutorialScene');
-    }
-
-    loadTutorialScene() {
-        this.scene.start('tutorialScene');
-    }
-
-    loadCurrentLevel() {
-        this.scene.start(currentLevel);
-    }
-
-    update() {
-        
     }
 }
