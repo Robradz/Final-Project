@@ -30,6 +30,16 @@ class HUD extends Phaser.Scene {
         this.add.existing(this.dashSprite);
         this.add.existing(this.invisibilitySprite);
         this.add.existing(this.teleportSprite);
-        this.player = this.scene.get('Player.js');
+        this.player = this.scene.get(currentLevel).player;
+
+        this.add.text(82, 362.5, '∞', {fontSize: 48, color: '#000'});
+        this.inCount = this.add.text(97, 462, this.player.getTpCount(), { fontFamily: 'locust', fontSize: 20, color: '#000'}).setOrigin(0.5,0.5);
+        this.tpCount = this.add.text(97, 539.5, this.player.getInCount(), { fontFamily: 'locust', fontSize: 20, color: '#000'}).setOrigin(0.5,0.5);
     }
+
+    update() {
+        this.tpCount.text = this.player.getTpCount();
+        this.inCount.text = this.player.getInCount();
+    }
+
 }
