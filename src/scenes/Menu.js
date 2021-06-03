@@ -56,7 +56,7 @@ class Menu extends Phaser.Scene {
         this.playButton.on('pointerout', 
             () => { this.playButton.setStyle({ fill: '#2080FF'}) });
         this.playButton.on('pointerup', 
-            () => { this.loadCurrentScene() });
+            () => { this.scene.start(currentLevel); });
 
         // TUTORIAL
         this.tutorialButton = this.add.text(
