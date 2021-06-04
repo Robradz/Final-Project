@@ -25,3 +25,5 @@ let keyA, keyD, keyW, keyS, keyE, keyF, keyQ, keyR, keySPACE, keyESC, keySHIFT;
 let cursors;
 
 let currentLevel;
+
+let eventListenerAdded = false;

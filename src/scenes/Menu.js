@@ -119,7 +119,8 @@ class Menu extends Phaser.Scene {
             () => { this.scene.start('creditsScene'); });
         
 
-        this.bgm = this.sound.add('theme',{volume: 1,loop:true});
+        this.game.sound.stopAll();
+        this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
         this.bgm.play();
     }
 }
