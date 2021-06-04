@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.facing = "right";
         this.scene = scene;
         this.HUDScene = this.scene.scene.get('HUDScene');
-        this.sfx = this.scene.sound.add('footsteps',{volume: 1,loop:true});
+        this.sfx = this.scene.sound.add('footsteps',{volume: .4,loop:true});
         window.addEventListener('keydown', (e) => this.manageAbilities(e.key));
         
         this.cooldowns = { 
@@ -42,6 +42,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.create();
     }
 
+    getTpCount() { return this.count.teleport; };
+    getInCount() { return this.count.invisibility; }
+
     create() {
         this.sfx.stop();
         this.scene.sound.stopAll();
@@ -73,8 +76,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.timers.dash != null && this.timers.dash.getProgress() < 1) {
             this.dashTimer.fillRectShape({x: 300, y: 300, width: 300, height: 300});
             this.dashTimer.fillStyle(0x0099FF, 1);
-            this.dashTimer.fillRect(-250, 75,
-                50 * this.timers.dash.getProgress(), 8);
+            this.dashTimer.fillRect(-228, 105,
+                63 * this.timers.dash.getProgress(), 5);
             this.HUDScene.add.existing(this.dashTimer);
         }
 
@@ -82,8 +85,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.timers.invisibility != null && this.timers.invisibility.getProgress() < 1) {
             this.invisibilityTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
             this.invisibilityTimer.fillStyle(0x0099FF, 1);
-            this.invisibilityTimer.fillRect(-250, 150,
-                50 * this.timers.invisibility.getProgress(), 8);
+            this.invisibilityTimer.fillRect(-228, 185,
+                63 * this.timers.invisibility.getProgress(), 5);
             this.HUDScene.add.existing(this.invisibilityTimer);
         }
 
@@ -91,8 +94,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.timers.teleport != null && this.timers.teleport.getProgress() < 1) {
             this.teleportTimer.fillRectShape({x: 300, y: 300, width:300, height: 300});
             this.teleportTimer.fillStyle(0x0099FF, 1);
-            this.teleportTimer.fillRect(-250, 225,
-                50 * this.timers.teleport.getProgress(), 8);
+            this.teleportTimer.fillRect(-228, 262,
+                63 * this.timers.teleport.getProgress(), 5);
             this.HUDScene.add.existing(this.teleportTimer);
         }
 

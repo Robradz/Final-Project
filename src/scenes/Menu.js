@@ -56,7 +56,7 @@ class Menu extends Phaser.Scene {
         this.playButton.on('pointerout', 
             () => { this.playButton.setStyle({ fill: '#2080FF'}) });
         this.playButton.on('pointerup', 
-            () => { this.loadCurrentScene() });
+            () => { this.scene.start(currentLevel); });
 
         // TUTORIAL
         this.tutorialButton = this.add.text(
@@ -119,7 +119,8 @@ class Menu extends Phaser.Scene {
             () => { this.scene.start('creditsScene'); });
         
 
-        this.bgm = this.sound.add('theme',{volume: 1,loop:true});
+        this.game.sound.stopAll();
+        this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
         this.bgm.play();
     }
 }

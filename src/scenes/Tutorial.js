@@ -16,7 +16,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     playMusic() {
-        this.bgm = this.sound.add('theme',{volume: 1,loop:true});
+        this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
         this.bgm.play();
     }
 
@@ -60,9 +60,16 @@ class Tutorial extends Phaser.Scene {
 
 
         // This launches the pause screen whenever ESC is pressed
-        window.addEventListener('keydown', (e) => this.checkPause(e.key));
+        if (!eventListenerAdded) {
+            window.addEventListener('keydown', (e) => this.checkPause(e.key));
+            eventListenerAdded = true;
+        }
         map.createLayer('Overhead', tileset);
         this.scene.launch("HUDScene");
+
+        this.player.ready.dash = false;
+        this.player.count.invisibility = 0;
+        this.player.count.teleport = 0;
     }
 
     DefineInputs() {
