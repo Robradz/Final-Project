@@ -112,11 +112,6 @@ class Tutorial extends Phaser.Scene {
         this.enemy1.body.setSize(16, 8);
         this.enemy1.body.setOffset(8, 22);
 
-        // this.closedDoor = new Phaser.Physics.Arcade.Sprite(
-        //     this, 500, 500, 'closedDoor');
-        // this.add.existing(this.closedDoor);
-        // this.door.setImmovable(true);
-
         this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
         this.closedDoor.setImmovable(true);
     }
@@ -161,7 +156,8 @@ class Tutorial extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
-                game.prompt.text = "This is the exit. This level is supposed to be ended here.";
+                // Make it start the next level
+                game.prompt.text = "This is the exit.";
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
@@ -170,8 +166,8 @@ class Tutorial extends Phaser.Scene {
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
-                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
-                                    "\nIf he got attracted, he will trail you. Find a way out.";
+                game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
+                                    "\nHe can also hear your footsteps from a smaller range. Find your way out.";
             }
         }
         if(this.distanceBetween(
@@ -181,8 +177,8 @@ class Tutorial extends Phaser.Scene {
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
-                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
-                                    "\nIf he got attracted, he will trail you. Find a way out.";
+                game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
+                                    "\nHe can also hear your footsteps from a smaller range. Find your way out.";
             }
         }
     }
