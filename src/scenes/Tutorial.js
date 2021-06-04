@@ -162,12 +162,13 @@ class Tutorial extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
-                game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
-                                    "\nHe can also hear your footsteps from a smaller range. Find your way out.";
+                game.prompt.text = "Keep your distance from the Alien. \n" +
+                    "He can see the area highlighted in yellow"+
+                    "\nHe can also hear your footsteps from a smaller range.\n" +
+                    "Find your way out.";
             }
         }
         if(this.distanceBetween(

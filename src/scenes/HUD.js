@@ -12,8 +12,13 @@ class HUD extends Phaser.Scene {
     }
 
     create() {
-        game.prompt = this.add.text(340, 20, "MOVE:WASD ECS:PAUSE/RESUME"
-        +'\nPress F to go through the vent', {fill: '#0ff'});
+        game.prompt = this.add.text(game.config.width / 2, 20,
+            "Move with WASD" +
+            "\nPause with ESCAPE" +
+            "\nHold SHIFT to silence your footsteps" +
+            '\nPress F to go through the vent', 
+            {fill: '#fff', fontFamily: 'locust', align: 'center'}
+            ).setOrigin(.5, 0);
 
         this.add.image(0, game.config.height, 'abilityUI').setOrigin(0,1).setScale(.75, .75);
 
