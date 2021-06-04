@@ -4,6 +4,8 @@ class LevelSelect extends Phaser.Scene {
     }
 
     preload() {
-        
+        this.load.image('background', '../../assets/Menu_1.png');
+        this.load.image('background', '../../assets/Menu_1.png');
+        this.load.image('background', '../../assets/Menu_1.png');
     }
 }
