@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.facing = "right";
         this.scene = scene;
         this.HUDScene = this.scene.scene.get('HUDScene');
-        this.sfx = this.scene.sound.add('footsteps',{volume: 1,loop:true});
+        this.sfx = this.scene.sound.add('footsteps',{volume: .4,loop:true});
         window.addEventListener('keydown', (e) => this.manageAbilities(e.key));
         
         this.cooldowns = { 
