@@ -15,14 +15,16 @@ class Pause extends Phaser.Scene {
             game.config.width/2, 
             game.config.height/2-100, 
             'Game Paused', 
-            {fill: '#0ff'}).setOrigin(.5, .5).setFontSize(100);
+            {fill: '#0ff', fontFamily: 'locust'}
+            ).setOrigin(.5, .5).setFontSize(72);
         
         // PLAY BUTTON
         this.playButton = this.add.text(
             game.config.width/2, 
             game.config.height/2, 
             'Resume', 
-            {fill: '#0dd'}).setOrigin(.5, .5).setFontSize(50);
+            {fill: '#0dd', fontFamily: 'potra'}
+            ).setOrigin(.5, .5).setFontSize(50);
         this.playButton.setInteractive();
         this.playButton.on('pointerover', 
             () => { this.playButton.setStyle({ fill: '#0aa'}) });
@@ -40,7 +42,8 @@ class Pause extends Phaser.Scene {
             game.config.width/2, 
             game.config.height/2 + 100, 
             'Exit to Menu', 
-            {fill: '#0dd'}).setOrigin(.5, .5).setFontSize(50);
+            {fill: '#0dd', fontFamily: 'potra'}
+            ).setOrigin(.5, .5).setFontSize(50);
         this.menuButton.setInteractive();
         this.menuButton.on('pointerover', 
             () => { this.menuButton.setStyle({ fill: '#0aa'}) });
