@@ -66,6 +66,10 @@ class Tutorial extends Phaser.Scene {
         }
         map.createLayer('Overhead', tileset);
         this.scene.launch("HUDScene");
+
+        this.player.ready.dash = false;
+        this.player.count.invisibility = 0;
+        this.player.count.teleport = 0;
     }
 
     DefineInputs() {
