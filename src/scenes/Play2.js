@@ -19,6 +19,7 @@ class Play2 extends Phaser.Scene {
     }
 
     create() {
+        unlockedLevels.level2 = true;
         this.paused = false;
         this.DefineInputs();
         currentLevel = 'level2';

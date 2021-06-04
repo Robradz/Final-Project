@@ -27,3 +27,11 @@ let cursors;
 let currentLevel;
 
 let eventListenerAdded = false;
+
+let unlockedLevels = {
+    tutorial: true,
+    level1: false,
+    level2: false,
+    level3: false,
+    level4: false
+};
