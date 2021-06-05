@@ -3,33 +3,43 @@ class Play2 extends Phaser.Scene {
         super("level2");
     }
 
-    preload() { // Change when we have new maps
+    preload() {
         this.load.image('tileset.png', 'assets/tileset.png');
         this.load.image('player', 'assets/scientist.png');
         this.load.image('enemy', 'assets/Alien.png');
         this.load.image('sector', 'assets/sector.png');
-        this.load.tilemapTiledJSON('tilesets', 'assets/tutorial.json');
+        this.load.tilemapTiledJSON('tilesets2', 'assets/teleport.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
         this.load.audio('theme', './assets/title theme.wav');
+        this.load.image('closedDoor', './assets/tileSprites/closedDoor.png')
+        this.load.image('openDoor', './assets/tileSprites/openDoor.png')
     }
 
     playMusic() {
-        this.bgm = this.sound.add('theme',{volume: 1,loop:true});
+        this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
         this.bgm.play();
     }
 
     create() {
-        unlockedLevels.level2 = true;
         this.paused = false;
         this.DefineInputs();
         currentLevel = 'level2';
 
-        const map = this.make.tilemap({ key: 'tilesets' });
+        const map = this.make.tilemap({ key: 'tilesets2' });
         const tileset = map.addTilesetImage('tileset', 'tileset.png');
         map.createLayer('Floor', tileset);
+        this.mask = map.createLayer('Mask', tileset);
         this.obstacles = map.createLayer('Wall', tileset);
         this.events = map.objects[0].objects;
         this.spawnXY = this.events.find((event)=>{return event.name === "respawn"});
+        this.tempVent = this.events.find((event)=>{return event.name === "VentIn"
+                                                    && event.type == 1});
+        this.tempVentOut = this.events.find((event)=>{return event.name === "VentOut"
+                                                        && event.type == 1});
+        this.tempVent1 = this.events.find((event)=>{return event.name === "VentIn"
+                                                        && event.type == 2});
+        this.tempVentOut1 = this.events.find((event)=>{return event.name === "VentOut"
+                                                        && event.type == 2});
         this.Exit = this.events.find((event)=>{return event.name === "Exit"});
         console.log(this.tempVent,this.tempVentOut);
         this.enemy1path = this.events.find((event)=>{return event.name === "path"
@@ -37,8 +47,12 @@ class Play2 extends Phaser.Scene {
         console.log(this.enemy1path);
         this.objects = map.createLayer('Object', tileset);
         
+        
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
+
+        //this.enemy1.cone.body.setCircle(30);
+        //this.enemy1.cone.body.setOffset(30,30);
 
         // Sets up camera zoom, allows it to follow player
         this.SetCamera(map);
@@ -48,9 +62,16 @@ class Play2 extends Phaser.Scene {
 
 
         // This launches the pause screen whenever ESC is pressed
-        window.addEventListener('keydown', (e) => this.checkPause(e.key));
+        if (!eventListenerAdded) {
+            window.addEventListener('keydown', (e) => this.checkPause(e.key));
+            eventListenerAdded = true;
+        }
         map.createLayer('Overhead', tileset);
         this.scene.launch("HUDScene");
+
+        this.player.ready.dash = false;
+        this.player.count.invisibility = 0;
+        this.player.count.teleport = 0;
     }
 
     DefineInputs() {
@@ -71,27 +92,31 @@ class Play2 extends Phaser.Scene {
 
     CreatePhysicsBodies() {
         this.player = new Player(this, this.spawnXY.x, this.spawnXY.y, 'player');
-        // this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
-        //     this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
-        // this.enemy1.depth = 10;
-        // this.enemy1.path = this.enemy1path;
-        // this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-        //     this.enemy1.y, 'sector');
-        // this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-        //     this.enemy1.y, 'sector');
-        // this.add.existing(this.player);
-        // this.physics.add.existing(this.player);
-        // this.add.existing(this.enemy1);
-        // this.physics.add.existing(this.enemy1);
-        // this.add.existing(this.enemy1.cone);
-        // this.physics.add.existing(this.enemy1.cone);
-        // this.add.existing(this.enemy1.colCone);
-        // this.physics.add.existing(this.enemy1.colCone);
-        // this.enemy1.colCone.alpha = 0;
-        // this.player.body.setSize(16, 8);
-        // this.player.body.setOffset(8, 22);
-        // this.enemy1.body.setSize(16, 8);
-        // this.enemy1.body.setOffset(8, 22);
+        this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
+            this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
+        this.enemy1.depth = 10;
+        this.enemy1.path = this.enemy1path;
+        this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
+            this.enemy1.y, 'sector');
+        this.enemy1.cone.depth = 2;
+        this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
+            this.enemy1.y, 'sector');
+        this.add.existing(this.player);
+        this.physics.add.existing(this.player);
+        this.add.existing(this.enemy1);
+        this.physics.add.existing(this.enemy1);
+        this.add.existing(this.enemy1.cone);
+        this.physics.add.existing(this.enemy1.cone);
+        this.add.existing(this.enemy1.colCone);
+        this.physics.add.existing(this.enemy1.colCone);
+        this.enemy1.colCone.alpha = 0;
+        this.player.body.setSize(16, 8);
+        this.player.body.setOffset(8, 22);
+        this.enemy1.body.setSize(16, 8);
+        this.enemy1.body.setOffset(8, 22);
+
+        this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
+        this.closedDoor.setImmovable(true);
     }
 
     CreateCollisionEvents() {
@@ -104,18 +129,23 @@ class Play2 extends Phaser.Scene {
         this.physics.add.overlap(this.enemy1.cone, this.player);
         this.physics.add.collider(this.player, this.enemy1, (player, enemy1) => {
             this.paused = true;
-            // this.scene.pause();
-            // this.scene.launch("pauseScene");
+            this.player.sfx.stop();
             this.scene.restart();
-            //game.prompt.text = "YOU GOT CAUGHT!";
             this.player.x = this.spawnXY.x;
             this.player.y = this.spawnXY.y;
-            this.player.sfx.stop();
         });
         this.physics.add.collider(this.enemy1, this.obstacles);
         this.physics.add.collider(this.enemy1.colCone, this.obstacles,
-            (colCone, obstacles) => {
+            (colCone, obstacles) => {});
+        if (this.closedDoor) {
+            this.physics.add.collider(this.closedDoor, this.player, () => { 
+                if(keyF.isDown) { 
+                    this.closedDoor.destroy();
+                    this.openDoor = this.physics.add.image(500, 500, 'openDoor');
+                    this.openDoor.setImmovable(true);
+                }
             });
+        }
     }
 
     stopDash() {
@@ -125,20 +155,28 @@ class Play2 extends Phaser.Scene {
     update() {
         this.player.update();
         this.enemy1.update();
+        //console.log(this.player.x,this.player.y);
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
-                game.prompt.text = "This is the exit. This level is supposed to be ended here.";
+                // Make it start the next level
+                //game.prompt.text = "This is the exit.";
+                this.scene.stop();
+                this.scene.stop("HUDScene");
+                this.scene.start("level2");
+                this.sound.stopAll();
+
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
-                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
-                                    "\nIf he got attracted, he will trail you. Find a way out.";
+                game.prompt.text = "Keep your distance from the Alien. \n" +
+                    "He can see the area highlighted in yellow"+
+                    "\nHe can also hear your footsteps from a smaller range.\n" +
+                    "Find your way out.";
             }
         }
         if(this.distanceBetween(
@@ -148,8 +186,8 @@ class Play2 extends Phaser.Scene {
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
-                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
-                                    "\nIf he got attracted, he will trail you. Find a way out.";
+                game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
+                                    "\nHe can also hear your footsteps from a smaller range. Find your way out.";
             }
         }
     }
@@ -168,7 +206,7 @@ class Play2 extends Phaser.Scene {
             this.paused = false;
             console.log("Paused: " + this.paused);
             this.scene.stop("pauseScene");
-            this.scene.resume("level2");
+            this.scene.resume("tutorialScene");
         }
     }
 }
