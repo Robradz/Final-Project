@@ -28,6 +28,7 @@ class Tutorial extends Phaser.Scene {
         const map = this.make.tilemap({ key: 'tilesets' });
         const tileset = map.addTilesetImage('tileset', 'tileset.png');
         map.createLayer('Floor', tileset);
+        this.mask = map.createLayer('Mask', tileset);
         this.obstacles = map.createLayer('Wall', tileset);
         this.events = map.objects[0].objects;
         this.spawnXY = this.events.find((event)=>{return event.name === "respawn"});
@@ -45,6 +46,7 @@ class Tutorial extends Phaser.Scene {
                                                         && event.type == 1});
         console.log(this.enemy1path);
         this.objects = map.createLayer('Object', tileset);
+        
         
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
@@ -89,6 +91,7 @@ class Tutorial extends Phaser.Scene {
         this.enemy1.path = this.enemy1path;
         this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
             this.enemy1.y, 'sector');
+        this.enemy1.cone.depth = 2;
         this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
             this.enemy1.y, 'sector');
         this.add.existing(this.player);
