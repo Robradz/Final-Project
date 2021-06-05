@@ -1,18 +1,17 @@
-class Menu extends Phaser.Scene {
+class EndScreen extends Phaser.Scene {
+
     constructor() {
-        super("menuScene");
-        currentLevel = 'tutorialScene';
+        super("endScreenScene");
     }
 
     preload() {
-        this.load.audio('theme', './assets/title theme.wav');
         this.load.image('background', '../../assets/Menu_1.png');
     }
 
     create() {
         this.add.image(game.config.width / 2, 
-            game.config.height / 2 ,'background').setScale(1.7, 1.5);
-
+            game.config.height / 2 ,'background').setScale(1.7, 1.5).setAlpha(0.25);
+    
         let menuConfig = {
             fontFamily: 'locust',
             fontSize: '28px',
@@ -25,30 +24,30 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        // TITLE
+        // Escape message
         this.title = this.add.text(
             game.config.width - 49, 
             game.config.height/2 - 149, 
-            'Secrets From Space', 
+            'You Escaped!', 
             menuConfig).setOrigin(1, 0.5).setFontSize(44);
 
         this.title = this.add.text(
             game.config.width - 50, 
             game.config.height/2 - 150, 
-            'Secrets From Space', 
+            'You Escaped!', 
             menuConfig).setOrigin(1, 0.5).setFontSize(44).setColor('#000');
         
-        // PLAY BUTTON
+        // Menu BUTTON
         this.playButton = this.add.text(
             game.config.width - 48,
             game.config.height/2 - 50, 
-            'Play', 
+            'Menu', 
             {align: 'right', fontFamily: 'potra', fill: '#000'}).setOrigin(1, 0).setFontSize(72);
 
         this.playButton = this.add.text(
             game.config.width - 50,
             game.config.height/2 - 52, 
-            'Play', 
+            'Menu', 
             {align: 'right', fontFamily: 'potra', fill: '#2080FF'}).setOrigin(1, 0).setFontSize(72);
         this.playButton.setInteractive();
         this.playButton.on('pointerover', 
@@ -56,19 +55,19 @@ class Menu extends Phaser.Scene {
         this.playButton.on('pointerout', 
             () => { this.playButton.setStyle({ fill: '#2080FF'}) });
         this.playButton.on('pointerup', 
-            () => { this.scene.start(currentLevel); });
+            () => { this.scene.start('menuScene'); });
 
         // TUTORIAL
         this.tutorialButton = this.add.text(
             game.config.width - 48, 
             game.config.height/2 + 30, 
-            'Tutorial', 
+            'Credits', 
             {align: 'right', fontFamily: 'potra', fill: '#000'}).setOrigin(1, 0).setFontSize(40);
 
         this.tutorialButton = this.add.text(
             game.config.width - 50, 
             game.config.height/2 + 28, 
-            'Tutorial', 
+            'Credits', 
             {align: 'right', fontFamily: 'potra', fill: '#2080FF'}).setOrigin(1, 0).setFontSize(40);
         this.tutorialButton.setInteractive();
         this.tutorialButton.on('pointerover', 
@@ -76,31 +75,6 @@ class Menu extends Phaser.Scene {
         this.tutorialButton.on('pointerout', 
             () => { this.tutorialButton.setStyle({ fill: '#2080FF'}) });
         this.tutorialButton.on('pointerup', 
-            () => { this.scene.start('tutorialScene'); });
-
-        // Credits
-        this.creditsButton = this.add.text(
-            game.config.width - 48, 
-            game.config.height/2 + 80, 
-            'Credits', 
-            {align: 'right', fontFamily: 'potra', fill: '#000'}).setOrigin(1, 0).setFontSize(40);
-
-        this.creditsButton = this.add.text(
-            game.config.width - 50, 
-            game.config.height/2 + 78, 
-            'Credits', 
-            {align: 'right', fontFamily: 'potra', fill: '#2080FF'}).setOrigin(1, 0).setFontSize(40);
-        this.creditsButton.setInteractive();
-        this.creditsButton.on('pointerover', 
-            () => { this.creditsButton.setStyle({ fill: '#0aa'}) });
-        this.creditsButton.on('pointerout', 
-            () => { this.creditsButton.setStyle({ fill: '#2080FF'}) });
-        this.creditsButton.on('pointerup', 
             () => { this.scene.start('creditsScene'); });
-        
-
-        this.game.sound.stopAll();
-        this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
-        this.bgm.play();
     }
 }
