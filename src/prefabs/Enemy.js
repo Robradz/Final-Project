@@ -184,18 +184,24 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             Math.abs(this.y - this.lastPositionY)) {
             this.facing = "right";
             this.cone.angle = 45;
+            this.anims.play('alienSideWaling', true);
+            this.flipX = false;
             //Math.abs(this.y - this.lastPositionY);
         } else if (this.x < this.lastPositionX && 
             Math.abs(this.x - this.lastPositionX) > 
             Math.abs(this.y - this.lastPositionY)) {
             this.facing = "left";
             this.cone.angle = -135;
+            this.anims.play('alienSideWaling', true);
+            this.flipX = true;
         } else if (this.y < this.lastPositionY) {
             this.facing = "up";
             this.cone.angle = -45;
+            this.anims.play('alienBackWaling', true);
         } else if (this.y > this.lastPositionY) {
             this.facing = "down";
             this.cone.angle = 135;
+            this.anims.play('alienFrontWaling', true);
         }
         this.lastPositionX = this.x;
         this.lastPositionY = this.y;
