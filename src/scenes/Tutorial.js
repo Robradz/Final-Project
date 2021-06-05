@@ -160,7 +160,11 @@ class Tutorial extends Phaser.Scene {
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
                 // Make it start the next level
-                game.prompt.text = "This is the exit.";
+                //game.prompt.text = "This is the exit.";
+                this.scene.stop("HUDScene");
+                this.scene.start("level1");
+                this.sound.stopAll();
+
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,

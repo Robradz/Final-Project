@@ -21,6 +21,7 @@ class HUD extends Phaser.Scene {
             ).setOrigin(.5, 0);
 
         this.add.image(0, game.config.height, 'abilityUI').setOrigin(0,1).setScale(.75, .75);
+        game.prompt.depth = 20;
 
         this.dashSprite = new Phaser.GameObjects.Sprite(this, 42, 370, 'dashSprite');
         this.dashSprite.setScale(1.5,1.5);
