@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="14">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="15">
  <editorsettings>
   <export target="teleport.json" format="json"/>
  </editorsettings>
@@ -148,9 +148,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,48,0,7,8,48,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,
+0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,0,0,0,0,0,0,0,0,
+0,0,0,0,0,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,0,0,0,0,0,0,0,0,
+0,0,0,0,2147483879,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,45,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -248,22 +248,22 @@
 </data>
  </layer>
  <objectgroup id="7" name="Events">
-  <object id="1" name="respawn" x="143.333" y="198.485">
+  <object id="1" name="respawn" x="983.33" y="912.485">
    <point/>
   </object>
   <object id="2" name="VentIn" type="1" x="689.667" y="507.417">
    <point/>
   </object>
-  <object id="3" name="VentOut" type="2" x="755" y="939.667">
+  <object id="3" name="VentOut" type="1" x="755" y="939.667">
    <point/>
   </object>
   <object id="4" name="VentIn" type="2" x="456.333" y="879.333">
    <point/>
   </object>
-  <object id="5" name="VentOut" type="1" x="274.667" y="813.333">
+  <object id="5" name="VentOut" type="2" x="274.667" y="813.333">
    <point/>
   </object>
-  <object id="6" name="Exit" type="2" x="872.333" y="917">
+  <object id="6" name="Exit" type="2" x="143.333" y="120">
    <point/>
   </object>
   <object id="7" name="path" type="1" x="213.751" y="259.564">
@@ -275,7 +275,10 @@
   <object id="9" name="path" type="3" x="687.006" y="871.359">
    <polygon points="-5.7465,6.7621 318.147,6.47434 317.958,56.9743 -5.57951,56.554"/>
   </object>
-  <object id="10" name="Teleporter" x="639" y="139">
+  <object id="10" name="Teleporter" x="643" y="142">
+   <point/>
+  </object>
+  <object id="14" name="portTo" x="143" y="250">
    <point/>
   </object>
  </objectgroup>
