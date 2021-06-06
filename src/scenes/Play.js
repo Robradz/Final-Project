@@ -239,6 +239,8 @@ class Play extends Phaser.Scene {
             this.player.x, this.player.y,
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
             game.prompt.text =  "Press F to go through vents";
+            game.prompt.x = game.config.width / 2;
+            game.prompt.y = 20;
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
