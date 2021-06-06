@@ -45,6 +45,7 @@ class Play2 extends Phaser.Scene {
         this.enemy1path = this.events.find((event)=>{return event.name === "path"
                                                         && event.type == 1});
         this.pickupXY = this.events.find((event)=>{return event.name === "Teleporter"});
+        this.portOutXY = this.events.find((event)=>{return event.name === "portTo"});
         this.objects = map.createLayer('Object', tileset);
         
         
@@ -163,7 +164,7 @@ class Play2 extends Phaser.Scene {
                 //game.prompt.text = "This is the exit.";
                 this.scene.stop();
                 this.scene.stop("HUDScene");
-                this.scene.start("level2");
+                this.scene.start("level3");
                 this.sound.stopAll();
 
         }
@@ -207,8 +208,11 @@ class Play2 extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.pickup.x,  this.pickup.y) < 32){
-            this.player.count.teleport = 3;
-            this.pickup.destroy();
+                this.player.count.teleport = 3;
+                game.prompt.text =  "Teleporter found. \nPress E to save the current postion\nPress R to teleport back.";
+                this.pickup.destroy();
+                this.player.x = this.portOutXY.x;
+                this.player.y = this.portOutXY.y;
         }
     }
 
