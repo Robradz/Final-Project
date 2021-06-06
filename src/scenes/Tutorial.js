@@ -142,8 +142,8 @@ class Tutorial extends Phaser.Scene {
         this.enemy1.body.setSize(16, 8);
         this.enemy1.body.setOffset(8, 22);
 
-        this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
-        this.closedDoor.setImmovable(true);
+        // this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
+        // this.closedDoor.setImmovable(true);
         
     }
 
@@ -198,7 +198,7 @@ class Tutorial extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
-            if (keyF.isDown) {
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
                 game.prompt.text = "Keep your distance from the Alien. \n" +
@@ -209,13 +209,31 @@ class Tutorial extends Phaser.Scene {
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
+            this.tempVentOut.x, this.tempVentOut.y) < 24){
+            game.prompt.text =  "Press F to go through the vent";
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.player.x = this.tempVent.x;
+                this.player.y = this.tempVent.y;
+            }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
             game.prompt.text =  "Press F to go through the vent";
-            if (keyF.isDown) {
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
                                     "\nHe can also hear your footsteps from a smaller range. Find your way out.";
+            }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
+            this.tempVentOut1.x, this.tempVentOut1.y) < 24){
+            game.prompt.text =  "Press F to go through the vent";
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.player.x = this.tempVent1.x;
+                this.player.y = this.tempVent1.y;
             }
         }
     }

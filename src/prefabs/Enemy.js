@@ -4,7 +4,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         this.detectionRadius = 30;
         this.detectionDistance = 60;
-        this.visableDistance = this.detectionDistance;
+        this.visableDistance = 0;
         this.movementSpeed = 30;
         this.facing = "right";
         this.player = scene.player;
@@ -17,31 +17,33 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
          if(this.cone && this.colCone){
-             this.cone.maskShape.x = this.colCone.x;
-             this.cone.maskShape.y = this.colCone.y;
+             this.cone.maskShape.x = this.x;
+             this.cone.maskShape.y = this.y;
             this.cone.x = this.x;
             this.cone.y = this.y;
             this.cone.distance = this.visableDistance;
             this.cone.update();
             this.colCone.body.setCircle(this.visableDistance);  
-            this.cone.body.setCircle(this.visableDistance); 
+            this.cone.body.setCircle(this.visableDistance + 24); 
             this.scene.physics.moveTo(this.colCone, 
                 this.x,
                 this.y,
                 this.movementSpeed * 2, 100);
+
             this.cone.body.setOffset(
-                this.detectionDistance - this.visableDistance, 
-                this.detectionDistance - this.visableDistance);
+                this.detectionDistance - (this.visableDistance + 24), 
+                this.detectionDistance - (this.visableDistance + 24));
+
              
-        //  if(this.colCone.body.blocked.none){
-        //      if(this.visableDistance < this.detectionDistance){
-        //         this.visableDistance += 0.2;
-        //      }
-        //  }else{
-        //     if(this.visableDistance > 0){
-        //         this.visableDistance -= 0.2;
-        //      }
-        //  }
+         if(this.colCone.body.blocked.none){
+             if(this.visableDistance < this.detectionDistance){
+                this.visableDistance += 0.2;
+             }
+         }else{
+            if(this.visableDistance > 0){
+                this.visableDistance -= 0.2;
+             }
+         }
          
             
          if(this.visableDistance != this.detectionDistance){
