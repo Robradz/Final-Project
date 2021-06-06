@@ -218,7 +218,7 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVentOut.x, this.tempVentOut.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
+            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
@@ -227,7 +227,7 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
+            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
@@ -238,7 +238,7 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
+            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
@@ -256,14 +256,14 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.keyPickup1.x,  this.keyPickup1.y) < 32){
-            game.prompt.text =  "One Key Card found. You can use it to unlock a door";
+            game.prompt.text =  "Key Card found. \nUse Keycards to open doors with F";
             this.keyPickup1.destroy();
             this.keyPickup1 = false;
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.keyPickup2.x,  this.keyPickup2.y) < 32){
-            game.prompt.text =  "One Key Card found. You can use it to unlock a door";
+            game.prompt.text =  "Key Card found. \nUse Keycards to open doors with F";
             this.keyPickup2.destroy();
             this.keyPickup2 = false;
         }

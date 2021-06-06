@@ -179,7 +179,7 @@ class Play2 extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVentOut.x, this.tempVentOut.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
+            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
@@ -188,7 +188,7 @@ class Play2 extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
+            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
@@ -199,7 +199,7 @@ class Play2 extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
-            game.prompt.text =  "Press F to go through the vent";
+            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
