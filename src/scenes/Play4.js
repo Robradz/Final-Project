@@ -19,6 +19,7 @@ class Play4 extends Phaser.Scene {
     }
 
     create() {
+        game.prompt.text = "";
         unlockedLevels.level4 = true;
         this.paused = false;
         this.DefineInputs();

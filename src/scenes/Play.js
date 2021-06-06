@@ -24,6 +24,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        game.prompt.text = "";
         this.paused = false;
         this.DefineInputs();
         currentLevel = 'level1';
@@ -246,7 +247,9 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.bootPickup.x,  this.bootPickup.y) < 32){
-            game.prompt.text =  "Dashing Boots found. Try to press SPACE when you are moving.";
+            game.prompt.text =  "Dashing Boots found. \nPress SPACE when you are moving.";
+            game.prompt.x = 250;
+            game.prompt.y = 250;
             this.player.ready.dash = true;
             this.bootPickup.destroy();
         }
