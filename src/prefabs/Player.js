@@ -294,7 +294,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = "idle";
             }
+            this.anims.stop();
             this.sfx.stop();
+        }
+        
+        if(this.body.velocity.y > 0 && !this.anims.isPlaying){
+            this.anims.play('playerWalking');
+        }
+        if(this.body.velocity.y < 0 && !this.anims.isPlaying){
+            this.anims.play('playerWalkingBack');
+        }
+        if(this.body.velocity.x > 0 && !this.anims.isPlaying){
+            this.anims.play('PlayerWalkingSide');
+            this.flipX = false;
+        }
+        if(this.body.velocity.x < 0 && !this.anims.isPlaying){
+            this.anims.play('PlayerWalkingSide');
+            this.flipX = true;
         }
     }
 
