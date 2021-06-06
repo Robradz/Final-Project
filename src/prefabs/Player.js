@@ -219,7 +219,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     manageMovement() {
         if (this.state == "dashing") {
             this.movementSpeed = 200;
-            
+
             this.scene.time.delayedCall(250, this.scene.stopDash, [], this.scene);
         }
         if (keyW.isDown && keyA.isDown) {
