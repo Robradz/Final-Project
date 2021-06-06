@@ -13,6 +13,13 @@ class Tutorial extends Phaser.Scene {
                             {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
         this.load.spritesheet('AlienRight', './assets/AlienRight.png', 
                             {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        
+        this.load.spritesheet('PlayerFront', './assets/ScientistWalking.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
+        this.load.spritesheet('PlayerBack', './assets/ScientistBackWalking.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
+        this.load.spritesheet('PlayerRight', './assets/ScientistRight.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
         this.load.image('sector', 'assets/sector.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tutorial.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
@@ -101,25 +108,46 @@ class Tutorial extends Phaser.Scene {
         this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
             this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
         this.anims.create({
-            key: 'alienFrontWaling',
+            key: 'alienFrontWalking',
             frames: this.anims.generateFrameNumbers('alienFront', { 
             start: 0, end: 3, first: 0}),
             frameRate: 20,
             repeat: -1
             });
         this.anims.create({
-            key: 'alienBackWaling',
+            key: 'alienBackWalking',
             frames: this.anims.generateFrameNumbers('alienBack', { 
             start: 0, end: 3, first: 0}),
             frameRate: 15,
             repeat: -1
             });
         this.anims.create({
-            key: 'alienSideWaling',
+            key: 'alienSideWalking',
             frames: this.anims.generateFrameNumbers('AlienRight', { 
             start: 0, end: 3, first: 0}),
             frameRate: 20,
             repeat: -1
+            });
+        this.anims.create({
+            key: 'playerWalking',
+            frames: this.anims.generateFrameNumbers('PlayerFront', { 
+            start: 0, end: 2, first: 0}),
+            frameRate: 8,
+            repeat: 0
+            });
+        this.anims.create({
+            key: 'playerWalkingBack',
+            frames: this.anims.generateFrameNumbers('PlayerBack', { 
+            start: 0, end: 2, first: 0}),
+            frameRate: 8,
+            repeat: 0
+            });
+        this.anims.create({
+            key: 'PlayerWalkingSide',
+            frames: this.anims.generateFrameNumbers('PlayerRight', { 
+            start: 0, end: 2, first: 0}),
+            frameRate: 8,
+            repeat: 0
             });
         this.enemy1.depth = 10;
         this.enemy1.path = this.enemy1path;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="15">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="16">
  <editorsettings>
   <export target="dash.json" format="json"/>
  </editorsettings>
@@ -285,6 +285,9 @@
    <point/>
   </object>
   <object id="14" name="Boot" x="256.667" y="265.167">
+   <point/>
+  </object>
+  <object id="15" name="acid" x="656" y="558.5">
    <point/>
   </object>
  </objectgroup>
