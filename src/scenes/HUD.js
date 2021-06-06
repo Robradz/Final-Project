@@ -46,6 +46,9 @@ class HUD extends Phaser.Scene {
     update() {
         this.tpCount.text = this.player.getTpCount();
         this.inCount.text = this.player.getInCount();
+        if (currentLevel != 'tutorialScene') {
+            game.prompt.text = "";
+        }
     }
 
 }
