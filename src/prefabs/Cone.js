@@ -8,13 +8,13 @@ class Cone extends Phaser.Physics.Arcade.Sprite{
         this.maskShape.y = y;
         this.pseudoCircle = new Phaser.Geom.Circle(0, 0, distance);
         this.maskShape.fillCircleShape(this.pseudoCircle);
-        //this.mask = new Phaser.Display.Masks.GeometryMask(this, this.maskShape);
+        this.mask = new Phaser.Display.Masks.GeometryMask(this, this.maskShape);
         this.angle = -45;
     }
 
     update() {
         this.maskShape.clear();
-        this.pseudoCircle = new Phaser.Geom.Circle(0, 0, this.distance);
+        this.pseudoCircle = new Phaser.Geom.Circle(-3, -2, this.distance + 24);
         this.maskShape.fillCircleShape(this.pseudoCircle);
     }
 }

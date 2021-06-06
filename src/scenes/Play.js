@@ -45,6 +45,7 @@ class Play extends Phaser.Scene {
         this.enemy1path = this.events.find((event)=>{return event.name === "path"
                                                         && event.type == 1});
         console.log(this.enemy1path);
+        this.bootXY = this.events.find((event)=>{return event.name === "Boot"});
         this.objects = map.createLayer('Object', tileset);
         
         
@@ -158,7 +159,7 @@ class Play extends Phaser.Scene {
         //console.log(this.player.x,this.player.y);
         if(this.distanceBetween(
             this.player.x, this.player.y,
-            this.Exit.x, this.Exit.y) < 24){
+            this.Exit.x, this.Exit.y) < 64){
                 // Make it start the next level
                 //game.prompt.text = "This is the exit.";
                 this.scene.stop("HUDScene");
@@ -169,7 +170,7 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
-            if (keyF.isDown) {
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
                 game.prompt.text = "Keep your distance from the Alien. \n" +
@@ -180,13 +181,31 @@ class Play extends Phaser.Scene {
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
+            this.tempVentOut.x, this.tempVentOut.y) < 24){
+            game.prompt.text =  "Press F to go through the vent";
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.player.x = this.tempVent.x;
+                this.player.y = this.tempVent.y;
+            }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
             game.prompt.text =  "Press F to go through the vent";
-            if (keyF.isDown) {
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
                                     "\nHe can also hear your footsteps from a smaller range. Find your way out.";
+            }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
+            this.tempVentOut1.x, this.tempVentOut1.y) < 24){
+            game.prompt.text =  "Press F to go through the vent";
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.player.x = this.tempVent1.x;
+                this.player.y = this.tempVent1.y;
             }
         }
     }
