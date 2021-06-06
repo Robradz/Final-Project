@@ -24,7 +24,6 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        game.prompt.text = "";
         this.paused = false;
         this.DefineInputs();
         currentLevel = 'level1';
