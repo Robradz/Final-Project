@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
         this.load.image('key', './assets/keycard.png')
         this.load.spritesheet('door', './assets/doorAnim.png', 
         {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('acidPool', './assets/acidAnim.png', 
+        {frameWidth: 96, frameHeight: 96, startFrame: 0, endFrame: 3});
     }
 
     playMusic() {
@@ -58,7 +60,7 @@ class Play extends Phaser.Scene {
         && event.type == 1});
         this.door2 = this.events.find((event)=>{return event.name === "door"
         && event.type == 2});
-        
+        this.acidXY = this.events.find((event)=>{return event.name === "acid"});
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
 
@@ -112,6 +114,16 @@ class Play extends Phaser.Scene {
         this.enemy1.cone.depth = 2;
         this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
             this.enemy1.y, 'sector');
+        this.anims.create({
+            key: 'acidAnim',
+            frames: this.anims.generateFrameNumbers('acidPool', { 
+            start: 0, end: 3, first: 0}),
+            frameRate: 8,
+            repeat: -1
+            });
+        this.acidpool = this.physics.add.sprite(this.acidXY.x, this.acidXY.y, 'acidPool', 0);
+        this.acidpool.setImmovable(true);
+        this.acidpool.anims.play('acidAnim');
         this.add.existing(this.player);
         this.physics.add.existing(this.player);
         this.add.existing(this.enemy1);
@@ -137,12 +149,14 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('door', { start: 0, end: 5 }),
             frameRate: 10
         });
-        this.closedDoor1 = this.physics.add.sprite(this.door1.x, this.door1.y, 'closedDoor', 1);
+        this.closedDoor1 = this.physics.add.sprite(this.door1.x, this.door1.y, 'closedDoor', 0);
         this.closedDoor1.depth = 10;
         this.closedDoor1.setImmovable(true);
-        this.closedDoor2 = this.physics.add.sprite(this.door2.x, this.door2.y, 'closedDoor', 1);
+        this.closedDoor2 = this.physics.add.sprite(this.door2.x, this.door2.y, 'closedDoor', 0);
         this.closedDoor2.depth = 10;
         this.closedDoor2.setImmovable(true);
+
+        //this.physics.add.collider(this.acidpool, this.player);
 
     }
 
@@ -170,6 +184,8 @@ class Play extends Phaser.Scene {
                     this.closedDoor1.anims.play('doorAnim');
                     this.keyPickup1 = true;
                     this.physics.world.removeCollider(this.doorCollider1);
+                }else{
+                    game.prompt.text =  "You need the key card to open the door.";
                 }
             });
         }
@@ -179,9 +195,20 @@ class Play extends Phaser.Scene {
                     this.closedDoor2.anims.play('doorAnim');
                     this.keyPickup2 = true;
                     this.physics.world.removeCollider(this.doorCollider2);
+                }else{
+                    game.prompt.text =  "You need the key card to open the door.";
                 }
             });
         }
+
+        this.acidCollider = this.physics.add.collider(this.acidpool, this.player, () => { 
+            if(!this.bootPickup) { //if boots are picked
+                this.physics.world.removeCollider(this.acidCollider);
+            }else{
+                game.prompt.text =  "You need special boots to walk on the acidpool.";
+            }
+        });
+        
     }
 
     stopDash() {
@@ -217,7 +244,6 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVentOut.x, this.tempVentOut.y) < 24){
-            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
@@ -226,7 +252,6 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
-            game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
@@ -253,6 +278,7 @@ class Play extends Phaser.Scene {
             game.prompt.y = 250;
             this.player.ready.dash = true;
             this.bootPickup.destroy();
+            this.bootPickup = false;
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,

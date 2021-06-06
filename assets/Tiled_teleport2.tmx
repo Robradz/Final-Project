@@ -254,13 +254,13 @@
   <object id="2" name="VentIn" type="1" x="689.667" y="507.417">
    <point/>
   </object>
-  <object id="3" name="VentOut" type="1" x="755" y="939.667">
+  <object id="3" name="VentOut" type="2" x="755" y="939.667">
    <point/>
   </object>
   <object id="4" name="VentIn" type="2" x="456.333" y="879.333">
    <point/>
   </object>
-  <object id="5" name="VentOut" type="2" x="274.667" y="813.333">
+  <object id="5" name="VentOut" type="1" x="274.667" y="813.333">
    <point/>
   </object>
   <object id="6" name="Exit" type="2" x="143.333" y="120">
