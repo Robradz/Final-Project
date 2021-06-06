@@ -13,6 +13,9 @@ class Play extends Phaser.Scene {
         this.load.audio('theme', './assets/title theme.wav');
         this.load.image('closedDoor', './assets/tileSprites/closedDoor.png')
         this.load.image('openDoor', './assets/tileSprites/openDoor.png')
+        this.load.image('key', './assets/keycard.png')
+        this.load.spritesheet('door', './assets/doorAnim.png', 
+        {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 5});
     }
 
     playMusic() {
@@ -46,8 +49,15 @@ class Play extends Phaser.Scene {
                                                         && event.type == 1});
         console.log(this.enemy1path);
         this.bootXY = this.events.find((event)=>{return event.name === "Boot"});
+        this.key1 = this.events.find((event)=>{return event.name === "key"
+        && event.type == 1});
+        this.key2 = this.events.find((event)=>{return event.name === "key"
+        && event.type == 2});
         this.objects = map.createLayer('Object', tileset);
-        
+        this.door1 = this.events.find((event)=>{return event.name === "door"
+        && event.type == 1});
+        this.door2 = this.events.find((event)=>{return event.name === "door"
+        && event.type == 2});
         
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
@@ -116,8 +126,24 @@ class Play extends Phaser.Scene {
         this.enemy1.body.setSize(16, 8);
         this.enemy1.body.setOffset(8, 22);
 
-        this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
-        this.closedDoor.setImmovable(true);
+        this.bootPickup = this.physics.add.image(this.bootXY.x, this.bootXY.y, 'dashSprite');
+        this.bootPickup.setImmovable(true);
+        this.keyPickup1 = this.physics.add.image(this.key1.x, this.key1.y, 'key');
+        this.keyPickup1.setImmovable(true);
+        this.keyPickup2 = this.physics.add.image(this.key2.x, this.key2.y, 'key');
+        this.keyPickup2.setImmovable(true);
+        this.anims.create({
+            key: 'doorAnim',
+            frames: this.anims.generateFrameNumbers('door', { start: 0, end: 5 }),
+            frameRate: 10
+        });
+        this.closedDoor1 = this.physics.add.sprite(this.door1.x, this.door1.y, 'closedDoor', 1);
+        this.closedDoor1.depth = 10;
+        this.closedDoor1.setImmovable(true);
+        this.closedDoor2 = this.physics.add.sprite(this.door2.x, this.door2.y, 'closedDoor', 1);
+        this.closedDoor2.depth = 10;
+        this.closedDoor2.setImmovable(true);
+
     }
 
     CreateCollisionEvents() {
@@ -138,12 +164,21 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.enemy1, this.obstacles);
         this.physics.add.collider(this.enemy1.colCone, this.obstacles,
             (colCone, obstacles) => {});
-        if (this.closedDoor) {
-            this.physics.add.collider(this.closedDoor, this.player, () => { 
-                if(keyF.isDown) { 
-                    this.closedDoor.destroy();
-                    this.openDoor = this.physics.add.image(500, 500, 'openDoor');
-                    this.openDoor.setImmovable(true);
+        if (this.closedDoor1) {
+            this.doorCollider1 = this.physics.add.collider(this.closedDoor1, this.player, () => { 
+                if(!this.keyPickup1) { 
+                    this.closedDoor1.anims.play('doorAnim');
+                    this.keyPickup1 = true;
+                    this.physics.world.removeCollider(this.doorCollider1);
+                }
+            });
+        }
+        if (this.closedDoor2) {
+            this.doorCollider2 = this.physics.add.collider(this.closedDoor2, this.player, () => { 
+                if(!this.keyPickup2) { 
+                    this.closedDoor2.anims.play('doorAnim');
+                    this.keyPickup2 = true;
+                    this.physics.world.removeCollider(this.doorCollider2);
                 }
             });
         }
@@ -207,6 +242,27 @@ class Play extends Phaser.Scene {
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
             }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
+            this.bootPickup.x,  this.bootPickup.y) < 32){
+            game.prompt.text =  "Dashing Boots found. Try to press SPACE when you are moving.";
+            this.player.ready.dash = true;
+            this.bootPickup.destroy();
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
+            this.keyPickup1.x,  this.keyPickup1.y) < 32){
+            game.prompt.text =  "One Key Card found. You can use it to unlock a door";
+            this.keyPickup1.destroy();
+            this.keyPickup1 = false;
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
+            this.keyPickup2.x,  this.keyPickup2.y) < 32){
+            game.prompt.text =  "One Key Card found. You can use it to unlock a door";
+            this.keyPickup2.destroy();
+            this.keyPickup2 = false;
         }
     }
 
