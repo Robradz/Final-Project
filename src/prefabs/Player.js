@@ -329,16 +329,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     checkPause() {
         console.log(this.scene);
-        if (!this.scene.paused) {
-            this.scene.paused = true;
-            console.log("Paused: " + this.scene.paused);
-            this.scene.scene.pause(currentLevel);
-            this.scene.scene.launch("pauseScene");
-        } else if (this.scene.paused) {
-            this.scene.paused = false;
-            console.log("Paused: " + this.scene.paused);
-            this.scene.scene.stop("pauseScene");
-            this.scene.scene.resume(currentLevel);
+        if(this.scene){
+            if (this.scene.paused) {
+                this.scene.paused = false;
+                console.log("Paused: " + this.scene.paused);
+                this.scene.scene.stop("pauseScene");
+                this.scene.scene.resume(currentLevel);
+            }else{
+                this.scene.paused = true;
+                console.log("Paused: " + this.scene.paused);
+                this.scene.scene.pause(currentLevel);
+                this.scene.scene.launch("pauseScene");
+            }
         }
     }
 }
