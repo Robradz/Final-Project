@@ -201,6 +201,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             case "R": // R ASCII code = 82
                 this.teleport();
                 break;
+            case "Escape":
+                this.checkPause();
+                break;
         }
     }
 
@@ -321,6 +324,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.sfx.play();
         } else if (this.sneaking) {
             this.sfx.stop();
+        }
+    }
+
+    checkPause() {
+        console.log(this.scene);
+        if (!this.scene.paused) {
+            this.scene.paused = true;
+            console.log("Paused: " + this.scene.paused);
+            this.scene.scene.pause(currentLevel);
+            this.scene.scene.launch("pauseScene");
+        } else if (this.scene.paused) {
+            this.scene.paused = false;
+            console.log("Paused: " + this.scene.paused);
+            this.scene.scene.stop("pauseScene");
+            this.scene.scene.resume(currentLevel);
         }
     }
 }

@@ -75,10 +75,10 @@ class Tutorial extends Phaser.Scene {
 
 
         // This launches the pause screen whenever ESC is pressed
-        if (!eventListenerAdded) {
-            window.addEventListener('keydown', (e) => this.checkPause(e.key));
-            eventListenerAdded = true;
-        }
+        // if (!eventListenerAdded) {
+        //     window.addEventListener('keydown', (e) => this.checkPause(e.key));
+        //     eventListenerAdded = true;
+        // }
         map.createLayer('Overhead', tileset);
         this.scene.launch("HUDScene");
 
@@ -271,17 +271,17 @@ class Tutorial extends Phaser.Scene {
         return Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
     }
 
-    checkPause(key) {
-        if (key == "Escape" && !this.paused) {
-            this.paused = true;
-            console.log("Paused: " + this.paused);
-            this.scene.pause();
-            this.scene.launch("pauseScene");
-        } else if (key == "Escape" && this.paused) {
-            this.paused = false;
-            console.log("Paused: " + this.paused);
-            this.scene.stop("pauseScene");
-            this.scene.resume(currentLevel);
-        }
-    }
+    // checkPause(key) {
+    //     if (key == "Escape" && !this.paused) {
+    //         this.paused = true;
+    //         console.log("Paused: " + this.paused);
+    //         this.scene.pause();
+    //         this.scene.launch("pauseScene");
+    //     } else if (key == "Escape" && this.paused) {
+    //         this.paused = false;
+    //         console.log("Paused: " + this.paused);
+    //         this.scene.stop("pauseScene");
+    //         this.scene.resume(currentLevel);
+    //     }
+    // }
 }
