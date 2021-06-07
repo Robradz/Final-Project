@@ -203,7 +203,7 @@ class Play3 extends Phaser.Scene {
             this.paused = false;
             console.log("Paused: " + this.paused);
             this.scene.stop("pauseScene");
-            this.scene.resume("tutorialScene");
+            this.scene.resume("level3");
         }
     }
 }
