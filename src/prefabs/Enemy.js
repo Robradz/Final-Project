@@ -212,4 +212,38 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     getDestination() {
         return this.path.polygon[this.movementStep];
     }
+    
 }
+function CreateEnemy(path, scene){
+    let enemy = new Enemy(scene, path.x + path.polygon[0].x,
+        path.y + path.polygon[0].y, 'enemy');
+    scene.add.existing(enemy);
+    scene.physics.add.existing(enemy);
+    enemy.depth = 10;
+    enemy.path = path;
+    enemy.cone = new Cone(enemy.detectionDistance, scene, enemy.x,
+        enemy.y, 'sector');
+    enemy.cone.depth = 2;
+    enemy.colCone = new Cone(enemy.detectionDistance, scene, enemy.x,
+        enemy.y, 'sector');
+    scene.add.existing(enemy.cone);
+    scene.physics.add.existing(enemy.cone);
+    scene.add.existing(enemy.colCone);
+    scene.physics.add.existing(enemy.colCone);
+    enemy.colCone.alpha = 0;
+
+    scene.physics.add.collider(scene.player, enemy, () => {
+        scene.paused = true;
+        scene.player.sfx.stop();
+        scene.scene.restart();
+        scene.player.x = scene.spawnXY.x;
+        scene.player.y = scene.spawnXY.y;
+        });
+    scene.physics.add.collider(enemy, scene.obstacles);
+    scene.physics.add.overlap(enemy.cone, scene.player);
+    scene.physics.add.collider(enemy.colCone, scene.obstacles);
+    enemy.body.setSize(16, 8);
+    enemy.body.setOffset(8, 22);
+    return enemy;
+}
+
