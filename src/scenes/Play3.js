@@ -130,7 +130,6 @@ class Play3 extends Phaser.Scene {
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
                 // Make it start the next level
-                //game.prompt.text = "This is the exit.";
                 this.scene.stop();
                 this.scene.stop("HUDScene");
                 this.scene.start("endScreenScene");
