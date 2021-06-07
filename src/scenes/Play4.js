@@ -19,6 +19,7 @@ class Play4 extends Phaser.Scene {
     }
 
     create() {
+        game.prompt.text = "";
         unlockedLevels.level4 = true;
         this.paused = false;
         this.DefineInputs();
@@ -137,8 +138,8 @@ class Play4 extends Phaser.Scene {
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
-                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
-                                    "\nIf he got attracted, he will trail you. Find a way out.";
+                game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
+                "\nHe can also hear your footsteps from a smaller range. Find your way out.";
             }
         }
         if(this.distanceBetween(
@@ -148,8 +149,8 @@ class Play4 extends Phaser.Scene {
             if (keyF.isDown) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
-                game.prompt.text = "keep a distance with the alien, your footsteps can attract him."+
-                                    "\nIf he got attracted, he will trail you. Find a way out.";
+                game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
+                "\nHe can also hear your footsteps from a smaller range. Find your way out.";
             }
         }
     }

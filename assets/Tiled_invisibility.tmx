@@ -209,14 +209,14 @@
   <object id="11" name="Exit   " x="1012.31" y="834.653">
    <point/>
   </object>
-  <object id="13" name="path" x="496.022" y="280.205" width="317.168" height="39.3479"/>
-  <object id="14" name="path" x="507.946" y="345.785" width="307.629" height="50.0792"/>
-  <object id="16" name="path" x="307.629" y="429.25" width="522.254" height="33.3861"/>
-  <object id="17" name="path" x="490.061" y="592.604" width="308.822" height="21.4625"/>
-  <object id="18" name="path" x="479.329" y="634.336" width="325.515" height="17.8854"/>
-  <object id="19" name="path" x="487.676" y="671.299" width="325.515" height="23.8472"/>
-  <object id="20" name="path" x="398.249" y="815.575" width="429.25" height="20.2701"/>
-  <object id="21" name="path" x="410.172" y="857.308" width="422.096" height="14.3083"/>
-  <object id="22" name="path" x="419.711" y="890.694" width="416.134" height="20.2701"/>
+  <object id="13" name="path" type="1" x="496.022" y="280.205" width="317.168" height="39.3479"/>
+  <object id="14" name="path" type="2" x="507.946" y="345.785" width="166.98" height="50.0792"/>
+  <object id="16" name="path" type="3" x="307.629" y="429.25" width="522.254" height="33.3861"/>
+  <object id="17" name="path" type="4" x="490.061" y="592.604" width="308.822" height="21.4625"/>
+  <object id="18" name="path" type="5" x="479.329" y="634.336" width="325.515" height="17.8854"/>
+  <object id="19" name="path" type="6" x="496.389" y="665.076" width="325.515" height="23.8472"/>
+  <object id="20" name="path" type="7" x="398.249" y="815.575" width="429.25" height="20.2701"/>
+  <object id="21" name="path" type="8" x="410.172" y="857.308" width="422.096" height="14.3083"/>
+  <object id="22" name="path" type="9" x="419.711" y="890.694" width="416.134" height="20.2701"/>
  </objectgroup>
 </map>

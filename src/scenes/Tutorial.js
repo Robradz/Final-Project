@@ -7,6 +7,19 @@ class Tutorial extends Phaser.Scene {
         this.load.image('tileset.png', 'assets/tileset.png');
         this.load.image('player', 'assets/scientist.png');
         this.load.image('enemy', 'assets/Alien.png');
+        this.load.spritesheet('alienBack', './assets/AlienBack.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('alienFront', './assets/AlienFront.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('AlienRight', './assets/AlienRight.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        
+        this.load.spritesheet('PlayerFront', './assets/ScientistWalking.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
+        this.load.spritesheet('PlayerBack', './assets/ScientistBackWalking.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
+        this.load.spritesheet('PlayerRight', './assets/ScientistRight.png', 
+                            {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
         this.load.image('sector', 'assets/sector.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tutorial.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
@@ -28,6 +41,7 @@ class Tutorial extends Phaser.Scene {
         const map = this.make.tilemap({ key: 'tilesets' });
         const tileset = map.addTilesetImage('tileset', 'tileset.png');
         map.createLayer('Floor', tileset);
+        this.mask = map.createLayer('Mask', tileset);
         this.obstacles = map.createLayer('Wall', tileset);
         this.events = map.objects[0].objects;
         this.spawnXY = this.events.find((event)=>{return event.name === "respawn"});
@@ -45,6 +59,7 @@ class Tutorial extends Phaser.Scene {
                                                         && event.type == 1});
         console.log(this.enemy1path);
         this.objects = map.createLayer('Object', tileset);
+        
         
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
@@ -92,10 +107,53 @@ class Tutorial extends Phaser.Scene {
         this.player = new Player(this, this.spawnXY.x, this.spawnXY.y, 'player');
         this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
             this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
+        this.anims.create({
+            key: 'alienFrontWalking',
+            frames: this.anims.generateFrameNumbers('alienFront', { 
+            start: 0, end: 3, first: 0}),
+            frameRate: 20,
+            repeat: -1
+            });
+        this.anims.create({
+            key: 'alienBackWalking',
+            frames: this.anims.generateFrameNumbers('alienBack', { 
+            start: 0, end: 3, first: 0}),
+            frameRate: 15,
+            repeat: -1
+            });
+        this.anims.create({
+            key: 'alienSideWalking',
+            frames: this.anims.generateFrameNumbers('AlienRight', { 
+            start: 0, end: 3, first: 0}),
+            frameRate: 20,
+            repeat: -1
+            });
+        this.anims.create({
+            key: 'playerWalking',
+            frames: this.anims.generateFrameNumbers('PlayerFront', { 
+            start: 0, end: 2, first: 0}),
+            frameRate: 8,
+            repeat: 0
+            });
+        this.anims.create({
+            key: 'playerWalkingBack',
+            frames: this.anims.generateFrameNumbers('PlayerBack', { 
+            start: 0, end: 2, first: 0}),
+            frameRate: 8,
+            repeat: 0
+            });
+        this.anims.create({
+            key: 'PlayerWalkingSide',
+            frames: this.anims.generateFrameNumbers('PlayerRight', { 
+            start: 0, end: 2, first: 0}),
+            frameRate: 8,
+            repeat: 0
+            });
         this.enemy1.depth = 10;
         this.enemy1.path = this.enemy1path;
         this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
             this.enemy1.y, 'sector');
+        this.enemy1.cone.depth = 2;
         this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
             this.enemy1.y, 'sector');
         this.add.existing(this.player);
@@ -112,8 +170,9 @@ class Tutorial extends Phaser.Scene {
         this.enemy1.body.setSize(16, 8);
         this.enemy1.body.setOffset(8, 22);
 
-        this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
-        this.closedDoor.setImmovable(true);
+        // this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
+        // this.closedDoor.setImmovable(true);
+        
     }
 
     CreateCollisionEvents() {
@@ -152,17 +211,22 @@ class Tutorial extends Phaser.Scene {
     update() {
         this.player.update();
         this.enemy1.update();
+        
         //console.log(this.player.x,this.player.y);
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 24){
                 // Make it start the next level
-                game.prompt.text = "This is the exit.";
+                //game.prompt.text = "This is the exit.";
+                this.scene.stop("HUDScene");
+                this.scene.start("level1");
+                this.sound.stopAll();
+
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
-            if (keyF.isDown) {
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
                 game.prompt.text = "Keep your distance from the Alien. \n" +
@@ -173,13 +237,31 @@ class Tutorial extends Phaser.Scene {
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
+            this.tempVentOut.x, this.tempVentOut.y) < 24){
+            game.prompt.text =  "Press F to go through the vent";
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.player.x = this.tempVent.x;
+                this.player.y = this.tempVent.y;
+            }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
             game.prompt.text =  "Press F to go through the vent";
-            if (keyF.isDown) {
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
                                     "\nHe can also hear your footsteps from a smaller range. Find your way out.";
+            }
+        }
+        if(this.distanceBetween(
+            this.player.x, this.player.y,
+            this.tempVentOut1.x, this.tempVentOut1.y) < 24){
+            game.prompt.text =  "Press F to go through the vent";
+            if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.player.x = this.tempVent1.x;
+                this.player.y = this.tempVent1.y;
             }
         }
     }

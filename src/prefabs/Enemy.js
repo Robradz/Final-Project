@@ -2,9 +2,9 @@
 class Enemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.detectionRadius = 30;
+        this.detectionRadius = 8;
         this.detectionDistance = 60;
-        this.visableDistance = this.detectionDistance;
+        this.visableDistance = 0;
         this.movementSpeed = 30;
         this.facing = "right";
         this.player = scene.player;
@@ -17,31 +17,33 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     update() {
          if(this.cone && this.colCone){
-             this.cone.maskShape.x = this.colCone.x;
-             this.cone.maskShape.y = this.colCone.y;
+             this.cone.maskShape.x = this.x;
+             this.cone.maskShape.y = this.y;
             this.cone.x = this.x;
             this.cone.y = this.y;
             this.cone.distance = this.visableDistance;
             this.cone.update();
             this.colCone.body.setCircle(this.visableDistance);  
-            this.cone.body.setCircle(this.visableDistance); 
+            this.cone.body.setCircle(this.visableDistance + 24); 
             this.scene.physics.moveTo(this.colCone, 
                 this.x,
                 this.y,
                 this.movementSpeed * 2, 100);
+
             this.cone.body.setOffset(
-                this.detectionDistance - this.visableDistance, 
-                this.detectionDistance - this.visableDistance);
+                this.detectionDistance - (this.visableDistance + 24), 
+                this.detectionDistance - (this.visableDistance + 24));
+
              
-        //  if(this.colCone.body.blocked.none){
-        //      if(this.visableDistance < this.detectionDistance){
-        //         this.visableDistance += 0.2;
-        //      }
-        //  }else{
-        //     if(this.visableDistance > 0){
-        //         this.visableDistance -= 0.2;
-        //      }
-        //  }
+         if(this.colCone.body.blocked.none){
+             if(this.visableDistance < this.detectionDistance){
+                this.visableDistance += 0.2;
+             }
+         }else{
+            if(this.visableDistance > 0){
+                this.visableDistance -= 0.2;
+             }
+         }
          
             
          if(this.visableDistance != this.detectionDistance){
@@ -114,12 +116,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.player.state != "idle") {
             this.checkRadius();
         }
-        if (this.player.state != "invisible") {
-            if(!this.cone.body.touching.none){
-                this.checkCone();
-                
+        
+        if(!this.cone.body.touching.none){
+            this.checkCone();
             }
-            
+        if (!this.player.alpha) {//hard to fix from the state side
+            this.isTrailing = false;
         }
     }
 
@@ -184,18 +186,24 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             Math.abs(this.y - this.lastPositionY)) {
             this.facing = "right";
             this.cone.angle = 45;
+            this.anims.play('alienSideWalking', true);
+            this.flipX = false;
             //Math.abs(this.y - this.lastPositionY);
         } else if (this.x < this.lastPositionX && 
             Math.abs(this.x - this.lastPositionX) > 
             Math.abs(this.y - this.lastPositionY)) {
             this.facing = "left";
             this.cone.angle = -135;
+            this.anims.play('alienSideWalking', true);
+            this.flipX = true;
         } else if (this.y < this.lastPositionY) {
             this.facing = "up";
             this.cone.angle = -45;
+            this.anims.play('alienBackWalking', true);
         } else if (this.y > this.lastPositionY) {
             this.facing = "down";
             this.cone.angle = 135;
+            this.anims.play('alienFrontWalking', true);
         }
         this.lastPositionX = this.x;
         this.lastPositionY = this.y;
@@ -204,4 +212,38 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     getDestination() {
         return this.path.polygon[this.movementStep];
     }
+    
 }
+function CreateEnemy(path, scene){
+    let enemy = new Enemy(scene, path.x + path.polygon[0].x,
+        path.y + path.polygon[0].y, 'enemy');
+    scene.add.existing(enemy);
+    scene.physics.add.existing(enemy);
+    enemy.depth = 10;
+    enemy.path = path;
+    enemy.cone = new Cone(enemy.detectionDistance, scene, enemy.x,
+        enemy.y, 'sector');
+    enemy.cone.depth = 2;
+    enemy.colCone = new Cone(enemy.detectionDistance, scene, enemy.x,
+        enemy.y, 'sector');
+    scene.add.existing(enemy.cone);
+    scene.physics.add.existing(enemy.cone);
+    scene.add.existing(enemy.colCone);
+    scene.physics.add.existing(enemy.colCone);
+    enemy.colCone.alpha = 0;
+
+    scene.physics.add.collider(scene.player, enemy, () => {
+        scene.paused = true;
+        scene.player.sfx.stop();
+        scene.scene.restart();
+        scene.player.x = scene.spawnXY.x;
+        scene.player.y = scene.spawnXY.y;
+        });
+    scene.physics.add.collider(enemy, scene.obstacles);
+    scene.physics.add.overlap(enemy.cone, scene.player);
+    scene.physics.add.collider(enemy.colCone, scene.obstacles);
+    enemy.body.setSize(16, 8);
+    enemy.body.setOffset(8, 22);
+    return enemy;
+}
+

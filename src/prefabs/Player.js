@@ -119,19 +119,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     placeTeleporter() {
-        this.teleporterPosition.x = this.x;
-        this.teleporterPosition.y = this.y;
-        if (!this.tpSprite) {
-            this.tpSprite = new Phaser.GameObjects.Sprite(
+        if(this.count.teleport > 0) {
+            this.teleporterPosition.x = this.x;
+            this.teleporterPosition.y = this.y;
+            if (!this.tpSprite) {
+                this.tpSprite = new Phaser.GameObjects.Sprite(
                 this.scene,
                 this.teleporterPosition.x, 
                 this.teleporterPosition.y,
                 this.tpTexture);
-            this.scene.add.existing(this.tpSprite);
-        }
-        else {
-            this.tpSprite.x = this.teleporterPosition.x;
-            this.tpSprite.y = this.teleporterPosition.y;
+                this.scene.add.existing(this.tpSprite);
+          }
+         else {
+                this.tpSprite.x = this.teleporterPosition.x;
+               this.tpSprite.y = this.teleporterPosition.y;
+            }
         }
     }
 
@@ -219,7 +221,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     manageMovement() {
         if (this.state == "dashing") {
             this.movementSpeed = 200;
-            
+
             this.scene.time.delayedCall(250, this.scene.stopDash, [], this.scene);
         }
         if (keyW.isDown && keyA.isDown) {
@@ -294,7 +296,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.state != "dashing") {
                 this.state = "idle";
             }
+            this.anims.stop();
             this.sfx.stop();
+        }
+        
+        if(this.body.velocity.y > 0 && !this.anims.isPlaying){
+            this.anims.play('playerWalking');
+        }
+        if(this.body.velocity.y < 0 && !this.anims.isPlaying){
+            this.anims.play('playerWalkingBack');
+        }
+        if(this.body.velocity.x > 0 && !this.anims.isPlaying){
+            this.anims.play('PlayerWalkingSide');
+            this.flipX = false;
+        }
+        if(this.body.velocity.x < 0 && !this.anims.isPlaying){
+            this.anims.play('PlayerWalkingSide');
+            this.flipX = true;
         }
     }
 
