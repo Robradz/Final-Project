@@ -46,10 +46,16 @@ class Play extends Phaser.Scene {
         this.tempVentOut1 = this.events.find((event)=>{return event.name === "VentOut"
                                                         && event.type == 2});
         this.Exit = this.events.find((event)=>{return event.name === "Exit"});
-        console.log(this.tempVent,this.tempVentOut);
-        this.enemy1path = this.events.find((event)=>{return event.name === "path"
-                                                        && event.type == 1});
-        console.log(this.enemy1path);
+        this.pathArray = [];
+        for(let i = 1;;i++){
+            let tempPath = this.events.find((event)=>{return event.name === "path"
+            && event.type == i});
+            if(tempPath){
+                this.pathArray.push(tempPath);
+            }else{
+                break;
+            }
+        }
         this.bootXY = this.events.find((event)=>{return event.name === "Boot"});
         this.key1 = this.events.find((event)=>{return event.name === "key"
         && event.type == 1});
@@ -63,9 +69,6 @@ class Play extends Phaser.Scene {
         this.acidXY = this.events.find((event)=>{return event.name === "acid"});
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
-
-        //this.enemy1.cone.body.setCircle(30);
-        //this.enemy1.cone.body.setOffset(30,30);
 
         // Sets up camera zoom, allows it to follow player
         this.SetCamera(map);
@@ -105,15 +108,7 @@ class Play extends Phaser.Scene {
 
     CreatePhysicsBodies() {
         this.player = new Player(this, this.spawnXY.x, this.spawnXY.y, 'player');
-        this.enemy1 = new Enemy(this, this.enemy1path.x + this.enemy1path.polygon[0].x,
-            this.enemy1path.y + this.enemy1path.polygon[0].y, 'enemy');
-        this.enemy1.depth = 10;
-        this.enemy1.path = this.enemy1path;
-        this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-            this.enemy1.y, 'sector');
-        this.enemy1.cone.depth = 2;
-        this.enemy1.colCone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
-            this.enemy1.y, 'sector');
+
         this.anims.create({
             key: 'acidAnim',
             frames: this.anims.generateFrameNumbers('acidPool', { 
@@ -126,17 +121,14 @@ class Play extends Phaser.Scene {
         this.acidpool.anims.play('acidAnim');
         this.add.existing(this.player);
         this.physics.add.existing(this.player);
-        this.add.existing(this.enemy1);
-        this.physics.add.existing(this.enemy1);
-        this.add.existing(this.enemy1.cone);
-        this.physics.add.existing(this.enemy1.cone);
-        this.add.existing(this.enemy1.colCone);
-        this.physics.add.existing(this.enemy1.colCone);
-        this.enemy1.colCone.alpha = 0;
+
         this.player.body.setSize(16, 8);
         this.player.body.setOffset(8, 22);
-        this.enemy1.body.setSize(16, 8);
-        this.enemy1.body.setOffset(8, 22);
+
+        this.enemies = [];
+        for(let path of this.pathArray){
+            this.enemies.push(CreateEnemy(path, this));
+        }
 
         this.bootPickup = this.physics.add.image(this.bootXY.x, this.bootXY.y, 'dashSprite');
         this.bootPickup.setImmovable(true);
@@ -156,8 +148,6 @@ class Play extends Phaser.Scene {
         this.closedDoor2.depth = 10;
         this.closedDoor2.setImmovable(true);
 
-        //this.physics.add.collider(this.acidpool, this.player);
-
     }
 
     CreateCollisionEvents() {
@@ -166,18 +156,6 @@ class Play extends Phaser.Scene {
         this.objects.setCollisionByExclusion([-1]);
         this.physics.add.collider(this.player, this.obstacles);
         this.physics.add.collider(this.player, this.objects);
-        //this.physics.add.collider(this.enemy1, this.objects);
-        this.physics.add.overlap(this.enemy1.cone, this.player);
-        this.physics.add.collider(this.player, this.enemy1, (player, enemy1) => {
-            this.paused = true;
-            this.player.sfx.stop();
-            this.scene.restart();
-            this.player.x = this.spawnXY.x;
-            this.player.y = this.spawnXY.y;
-        });
-        this.physics.add.collider(this.enemy1, this.obstacles);
-        this.physics.add.collider(this.enemy1.colCone, this.obstacles,
-            (colCone, obstacles) => {});
         if (this.closedDoor1) {
             this.doorCollider1 = this.physics.add.collider(this.closedDoor1, this.player, () => { 
                 if(!this.keyPickup1) { 
@@ -217,13 +195,15 @@ class Play extends Phaser.Scene {
 
     update() {
         this.player.update();
-        this.enemy1.update();
-        //console.log(this.player.x,this.player.y);
+
+        for(let enemy of this.enemies){
+            enemy.update();
+        }
+
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.Exit.x, this.Exit.y) < 64){
                 // Make it start the next level
-                //game.prompt.text = "This is the exit.";
                 this.scene.stop("HUDScene");
                 this.scene.start("level2");
                 this.sound.stopAll();

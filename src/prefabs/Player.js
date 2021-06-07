@@ -119,19 +119,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     placeTeleporter() {
-        this.teleporterPosition.x = this.x;
-        this.teleporterPosition.y = this.y;
-        if (!this.tpSprite) {
-            this.tpSprite = new Phaser.GameObjects.Sprite(
+        if(this.count.teleport > 0) {
+            this.teleporterPosition.x = this.x;
+            this.teleporterPosition.y = this.y;
+            if (!this.tpSprite) {
+                this.tpSprite = new Phaser.GameObjects.Sprite(
                 this.scene,
                 this.teleporterPosition.x, 
                 this.teleporterPosition.y,
                 this.tpTexture);
-            this.scene.add.existing(this.tpSprite);
-        }
-        else {
-            this.tpSprite.x = this.teleporterPosition.x;
-            this.tpSprite.y = this.teleporterPosition.y;
+                this.scene.add.existing(this.tpSprite);
+          }
+         else {
+                this.tpSprite.x = this.teleporterPosition.x;
+               this.tpSprite.y = this.teleporterPosition.y;
+            }
         }
     }
 
