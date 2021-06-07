@@ -233,16 +233,23 @@ class Tutorial extends Phaser.Scene {
             this.Exit.x, this.Exit.y) < 24){
                 // Make it start the next level
                 //game.prompt.text = "This is the exit.";
+                
                 this.scene.stop("HUDScene");
-                this.scene.start("level1");
-                this.scene.stop("tutorialScene");
                 this.sound.stopAll();
+                this.scene.stop("tutorialScene");
+                this.scene.start("level1");
+                // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
 
+	            //     })
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
                 game.prompt.text = "Keep your distance from the Alien. \n" +
@@ -256,6 +263,10 @@ class Tutorial extends Phaser.Scene {
             this.tempVentOut.x, this.tempVentOut.y) < 24){
             game.prompt.text =  "Press F to go through the vent";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
             }
@@ -265,6 +276,10 @@ class Tutorial extends Phaser.Scene {
             this.tempVent1.x, this.tempVent1.y) < 24){
             game.prompt.text =  "Press F to go through the vent";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
@@ -276,6 +291,10 @@ class Tutorial extends Phaser.Scene {
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
             game.prompt.text =  "Press F to go through the vent";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
             }
