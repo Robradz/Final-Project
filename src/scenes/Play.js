@@ -142,6 +142,15 @@ class Play extends Phaser.Scene {
         this.closedDoor2.depth = 10;
         this.closedDoor2.setImmovable(true);
 
+        for(let event of this.events){
+            if(event.name != "path"
+            && event.name != "respawn"
+            && event.name != "acid"){
+                let indicator = this.physics.add.sprite(event.x, event.y - 25, 'indicator', 0);
+                indicator.anims.play('arrow');
+            }
+        }
+
     }
 
     CreateCollisionEvents() {

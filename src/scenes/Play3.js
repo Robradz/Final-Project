@@ -105,6 +105,15 @@ class Play3 extends Phaser.Scene {
 
         this.pickup = this.physics.add.image(this.pickupXY.x, this.pickupXY.y, 'invisibilitySprite');
         this.pickup.setImmovable(true);
+
+        for(let event of this.events){
+            if(event.name != "path"
+            && event.name != "respawn"
+            && event.name != "acid"){
+                let indicator = this.physics.add.sprite(event.x, event.y - 25, 'indicator', 0);
+                indicator.anims.play('arrow');
+            }
+        }
     }
 
     CreateCollisionEvents() {
@@ -176,7 +185,7 @@ class Play3 extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.pickup.x,  this.pickup.y) < 32){
-                this.player.count.invisibility = 3;
+                this.player.count.invisibility = 6;
                 game.prompt.text =  "Invisibility cloak found. \nPress Q to be invisible.";
                 this.pickup.destroy();
         }
