@@ -2,7 +2,6 @@ class Pause extends Phaser.Scene {
     constructor() {
         super("pauseScene");
         this.isPaused = false;
-        this.returnScene;
     }
 
     preload() {
@@ -34,6 +33,7 @@ class Pause extends Phaser.Scene {
             () => { 
                 let curr = this.scene.get(currentLevel);
                 curr.paused = false;
+                console.log(currentLevel, curr.paused);
                 this.scene.resume(currentLevel);
                 this.scene.stop("pauseScene"); });
 
