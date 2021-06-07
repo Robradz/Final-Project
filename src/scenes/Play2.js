@@ -17,6 +17,7 @@ class Play2 extends Phaser.Scene {
 
     playMusic() {
         this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
+        this.sfx = this.sound.add('picked',{volume: 0.2});
         this.bgm.play();
     }
 
@@ -110,8 +111,13 @@ class Play2 extends Phaser.Scene {
             if(event.name != "path"
             && event.name != "respawn"
             && event.name != "acid"){
-                let indicator = this.physics.add.sprite(event.x, event.y - 25, 'indicator', 0);
-                indicator.anims.play('arrow');
+                if(event.name == "door"){
+                    let indicator = this.physics.add.sprite(event.x, event.y - 25, 'indicator', 0);
+                    indicator.anims.play('arrow');
+                }else{
+                    let indicator = this.physics.add.sprite(event.x, event.y - 40, 'indicator', 0);
+                    indicator.anims.play('arrow');
+                }
             }
         }
     }
@@ -158,6 +164,10 @@ class Play2 extends Phaser.Scene {
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
             }
@@ -167,6 +177,10 @@ class Play2 extends Phaser.Scene {
             this.tempVentOut.x, this.tempVentOut.y) < 24){
             game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
             }
@@ -176,6 +190,10 @@ class Play2 extends Phaser.Scene {
             this.tempVent1.x, this.tempVent1.y) < 24){
             game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
@@ -187,6 +205,10 @@ class Play2 extends Phaser.Scene {
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
             game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
             }
@@ -195,6 +217,7 @@ class Play2 extends Phaser.Scene {
             this.player.x, this.player.y,
             this.pickup.x,  this.pickup.y) < 32){
                 this.player.count.teleport = 6;
+                this.sfx.play();
                 game.prompt.text =  "Teleporter found. \nPress E to save the current postion\nPress R to teleport back.";
                 this.pickup.destroy();
                 this.player.x = this.portOutXY.x;

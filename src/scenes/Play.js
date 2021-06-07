@@ -22,6 +22,7 @@ class Play extends Phaser.Scene {
 
     playMusic() {
         this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
+        this.sfx = this.sound.add('picked',{volume: 0.2});
         this.bgm.play();
     }
 
@@ -184,6 +185,7 @@ class Play extends Phaser.Scene {
 
         this.acidCollider = this.physics.add.collider(this.acidpool, this.player, () => { 
             if(!this.bootPickup) { //if boots are picked
+                this.sfx.play();
                 this.physics.world.removeCollider(this.acidCollider);
             }else{
                 game.prompt.text =  "You need special boots to walk on the acidpool.";
@@ -216,6 +218,10 @@ class Play extends Phaser.Scene {
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
                 game.prompt.text = "Keep your distance from the Alien. \n" +
@@ -228,6 +234,10 @@ class Play extends Phaser.Scene {
             this.player.x, this.player.y,
             this.tempVentOut.x, this.tempVentOut.y) < 24){
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
             }
@@ -236,6 +246,10 @@ class Play extends Phaser.Scene {
             this.player.x, this.player.y,
             this.tempVent1.x, this.tempVent1.y) < 24){
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
@@ -245,10 +259,14 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
-            game.prompt.text =  "Press F to go through vents";
-            game.prompt.x = game.config.width / 2;
-            game.prompt.y = 20;
+                game.prompt.text =  "Press F to go through vents";
+                game.prompt.x = game.config.width / 2;
+                game.prompt.y = 20;
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
             }
@@ -256,26 +274,29 @@ class Play extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.bootPickup.x,  this.bootPickup.y) < 32){
-            game.prompt.text =  "Dashing Boots found. \nPress SPACE when you are moving.";
-            game.prompt.x = 250;
-            game.prompt.y = 250;
-            this.player.ready.dash = true;
-            this.bootPickup.destroy();
-            this.bootPickup = false;
+                this.sfx.play();
+                game.prompt.text =  "Dashing Boots found. \nPress SPACE when you are moving.";
+                game.prompt.x = 250;
+                game.prompt.y = 250;
+                this.player.ready.dash = true;
+                this.bootPickup.destroy();
+                this.bootPickup = false;
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.keyPickup1.x,  this.keyPickup1.y) < 32){
-            game.prompt.text =  "Key Card found. \nUse Keycards to open doors with F";
-            this.keyPickup1.destroy();
-            this.keyPickup1 = false;
+                this.sfx.play();
+                game.prompt.text =  "Key Card found. \nUse Keycards to open doors with F";
+                this.keyPickup1.destroy();
+                this.keyPickup1 = false;
         }
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.keyPickup2.x,  this.keyPickup2.y) < 32){
-            game.prompt.text =  "Key Card found. \nUse Keycards to open doors with F";
-            this.keyPickup2.destroy();
-            this.keyPickup2 = false;
+                this.sfx.play();
+                game.prompt.text =  "Key Card found. \nUse Keycards to open doors with F";
+                this.keyPickup2.destroy();
+                this.keyPickup2 = false;
         }
     }
 

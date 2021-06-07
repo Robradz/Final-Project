@@ -13,6 +13,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.isTrailing = false;
         this.lastPositionX = x;
         this.lastPositionY = y;
+        this.sfx = scene.sound.add('spotted',{volume: 0.2});
     }
 
     update() {
@@ -146,9 +147,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     checkCone() {
         // if (this.distanceBetween(this.x, this.y, this.player.x, this.player.y) 
         //     > this.visableDistance) { return; }
+        let preState = this.isTrailing;
         if(this.facing == this.getTagetFacing(this.player)){
             if (this.facing == "right") {
                console.warn("Player caught by cone facing right");
+               this.sfx.play();
             game.prompt.text = "the alien got attracted";
             this.isTrailing = true;
             } else if (this.facing == "left") {
@@ -164,6 +167,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
               game.prompt.text = "the alien got attracted";
               this.isTrailing = true;
             }
+        }
+        if(!preState && this.isTrailing){
+            this.sfx.play();
         }
     }
 

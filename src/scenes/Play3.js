@@ -17,6 +17,7 @@ class Play3 extends Phaser.Scene {
 
     playMusic() {
         this.bgm = this.sound.add('theme',{volume: 0.2,loop:true});
+        this.sfx = this.sound.add('picked',{volume: 0.2});
         this.bgm.play();
     }
 
@@ -149,6 +150,10 @@ class Play3 extends Phaser.Scene {
             this.player.x, this.player.y,
             this.tempVent.x, this.tempVent.y) < 24){
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut.x;
                 this.player.y = this.tempVentOut.y;
             }
@@ -158,6 +163,10 @@ class Play3 extends Phaser.Scene {
             this.tempVentOut.x, this.tempVentOut.y) < 24){
             game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent.x;
                 this.player.y = this.tempVent.y;
             }
@@ -167,6 +176,10 @@ class Play3 extends Phaser.Scene {
             this.tempVent1.x, this.tempVent1.y) < 24){
             game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVentOut1.x;
                 this.player.y = this.tempVentOut1.y;
                 game.prompt.text = "Keep your distance from the Alien. He can see the area highlighted in yellow"+
@@ -178,6 +191,10 @@ class Play3 extends Phaser.Scene {
             this.tempVentOut1.x, this.tempVentOut1.y) < 24){
             game.prompt.text =  "Press F to go through vents";
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
+                this.cameras.main.fadeOut(60);
+                this.cameras.main.once('camerafadeoutcomplete', function (camera) {
+                    camera.fadeIn(600);
+                });
                 this.player.x = this.tempVent1.x;
                 this.player.y = this.tempVent1.y;
             }
@@ -186,6 +203,7 @@ class Play3 extends Phaser.Scene {
             this.player.x, this.player.y,
             this.pickup.x,  this.pickup.y) < 32){
                 this.player.count.invisibility = 6;
+                this.sfx.play();
                 game.prompt.text =  "Invisibility cloak found. \nPress Q to be invisible.";
                 this.pickup.destroy();
         }
