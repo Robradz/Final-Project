@@ -2,7 +2,7 @@
 class Enemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.detectionRadius = 30;
+        this.detectionRadius = 8;
         this.detectionDistance = 60;
         this.visableDistance = 0;
         this.movementSpeed = 30;
@@ -116,12 +116,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.player.state != "idle") {
             this.checkRadius();
         }
-        if (this.player.state != "invisible") {
-            if(!this.cone.body.touching.none){
-                this.checkCone();
-                
+        
+        if(!this.cone.body.touching.none){
+            this.checkCone();
             }
-            
+        if (!this.player.alpha) {//hard to fix from the state side
+            this.isTrailing = false;
         }
     }
 

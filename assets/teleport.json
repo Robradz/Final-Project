@@ -29,7 +29,7 @@
          "name":"Mask",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -53,7 +53,7 @@
          "name":"Object",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -65,7 +65,7 @@
          "name":"Overhead",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -77,7 +77,7 @@
          "name":"Lighting",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":32,
          "x":0,
          "y":0
@@ -193,26 +193,26 @@
                  "name":"path",
                  "polygon":[
                         {
-                         "x":-6.74005,
+                         "x":-6.11021016744713,
                          "y":11.3148
                         }, 
                         {
-                         "x":373.153,
+                         "x":338.282839832553,
                          "y":10.8333
                         }, 
                         {
-                         "x":372.932,
+                         "x":338.082491697598,
                          "y":95.3333
                         }, 
                         {
-                         "x":-6.54419,
+                         "x":-5.93265276603376,
                          "y":94.6299
                         }],
                  "rotation":0,
                  "type":"2",
                  "visible":true,
                  "width":0,
-                 "x":86.5734,
+                 "x":85.9435601674471,
                  "y":811.667
                 }, 
                 {
