@@ -20,6 +20,8 @@ class Tutorial extends Phaser.Scene {
                             {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
         this.load.spritesheet('PlayerRight', './assets/ScientistRight.png', 
                             {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 2});
+        this.load.spritesheet('indicator', './assets/indicator.png', 
+                            {frameWidth: 16, frameHeight: 16, startFrame: 0, endFrame: 4});
         this.load.image('sector', 'assets/sector.png');
         this.load.tilemapTiledJSON('tilesets', 'assets/tutorial.json');
         this.load.audio('footsteps', './assets/footsteps.wav');
@@ -54,12 +56,9 @@ class Tutorial extends Phaser.Scene {
         this.tempVentOut1 = this.events.find((event)=>{return event.name === "VentOut"
                                                         && event.type == 2});
         this.Exit = this.events.find((event)=>{return event.name === "Exit"});
-        console.log(this.tempVent,this.tempVentOut);
         this.enemy1path = this.events.find((event)=>{return event.name === "path"
                                                         && event.type == 1});
-        console.log(this.enemy1path);
         this.objects = map.createLayer('Object', tileset);
-        
         
         // Phyiscs Bodies include player, enemies, enemy detections
         this.CreatePhysicsBodies();
@@ -149,6 +148,14 @@ class Tutorial extends Phaser.Scene {
             frameRate: 8,
             repeat: 0
             });
+        this.anims.create({
+            key: 'arrow',
+            frames: this.anims.generateFrameNumbers('indicator', { 
+            start: 0, end: 4, first: 0}),
+            frameRate: 15,
+            repeat: -1,
+            yoyo: true
+            });
         this.enemy1.depth = 10;
         this.enemy1.path = this.enemy1path;
         this.enemy1.cone = new Cone(this.enemy1.detectionDistance, this, this.enemy1.x,
@@ -172,6 +179,14 @@ class Tutorial extends Phaser.Scene {
 
         // this.closedDoor = this.physics.add.image(500, 500, 'closedDoor');
         // this.closedDoor.setImmovable(true);
+        for(let event of this.events){
+            if(event.name != "path"
+            && event.name != "respawn"
+            && event.name != "acid"){
+                let indicator = this.physics.add.sprite(event.x, event.y - 25, 'indicator', 0);
+                indicator.anims.play('arrow');
+            }
+        }
         
     }
 

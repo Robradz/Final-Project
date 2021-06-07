@@ -58,36 +58,16 @@ class Menu extends Phaser.Scene {
         this.playButton.on('pointerup', 
             () => { this.scene.start(currentLevel); });
 
-        // TUTORIAL
-        this.tutorialButton = this.add.text(
-            game.config.width - 48, 
-            game.config.height/2 + 30, 
-            'Tutorial', 
-            {align: 'right', fontFamily: 'potra', fill: '#000'}).setOrigin(1, 0).setFontSize(40);
-
-        this.tutorialButton = this.add.text(
-            game.config.width - 50, 
-            game.config.height/2 + 28, 
-            'Tutorial', 
-            {align: 'right', fontFamily: 'potra', fill: '#2080FF'}).setOrigin(1, 0).setFontSize(40);
-        this.tutorialButton.setInteractive();
-        this.tutorialButton.on('pointerover', 
-            () => { this.tutorialButton.setStyle({ fill: '#0aa'}) });
-        this.tutorialButton.on('pointerout', 
-            () => { this.tutorialButton.setStyle({ fill: '#2080FF'}) });
-        this.tutorialButton.on('pointerup', 
-            () => { this.scene.start('tutorialScene'); });
-
         // Credits
         this.creditsButton = this.add.text(
             game.config.width - 48, 
-            game.config.height/2 + 80, 
+            game.config.height/2 + 30, 
             'Credits', 
             {align: 'right', fontFamily: 'potra', fill: '#000'}).setOrigin(1, 0).setFontSize(40);
 
         this.creditsButton = this.add.text(
             game.config.width - 50, 
-            game.config.height/2 + 78, 
+            game.config.height/2 + 28, 
             'Credits', 
             {align: 'right', fontFamily: 'potra', fill: '#2080FF'}).setOrigin(1, 0).setFontSize(40);
         this.creditsButton.setInteractive();

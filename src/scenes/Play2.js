@@ -105,6 +105,15 @@ class Play2 extends Phaser.Scene {
 
         this.pickup = this.physics.add.image(this.pickupXY.x, this.pickupXY.y, 'teleportSprite');
         this.pickup.setImmovable(true);
+
+        for(let event of this.events){
+            if(event.name != "path"
+            && event.name != "respawn"
+            && event.name != "acid"){
+                let indicator = this.physics.add.sprite(event.x, event.y - 25, 'indicator', 0);
+                indicator.anims.play('arrow');
+            }
+        }
     }
 
     CreateCollisionEvents() {
@@ -185,7 +194,7 @@ class Play2 extends Phaser.Scene {
         if(this.distanceBetween(
             this.player.x, this.player.y,
             this.pickup.x,  this.pickup.y) < 32){
-                this.player.count.teleport = 3;
+                this.player.count.teleport = 6;
                 game.prompt.text =  "Teleporter found. \nPress E to save the current postion\nPress R to teleport back.";
                 this.pickup.destroy();
                 this.player.x = this.portOutXY.x;
