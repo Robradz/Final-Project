@@ -284,13 +284,13 @@ class Play extends Phaser.Scene {
         if (key == "Escape" && !this.paused) {
             this.paused = true;
             console.log("Paused: " + this.paused);
-            this.scene.pause();
+            this.scene.pause(currentLevel);
             this.scene.launch("pauseScene");
         } else if (key == "Escape" && this.paused) {
             this.paused = false;
             console.log("Paused: " + this.paused);
             this.scene.stop("pauseScene");
-            this.scene.resume("level1");
+            this.scene.resume(currentLevel);
         }
     }
 }

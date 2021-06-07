@@ -34,9 +34,9 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
+        currentLevel = 'tutorialScene';
         this.paused = false;
         this.DefineInputs();
-        currentLevel = 'tutorialScene';
 
         const map = this.make.tilemap({ key: 'tilesets' });
         const tileset = map.addTilesetImage('tileset', 'tileset.png');
@@ -220,6 +220,7 @@ class Tutorial extends Phaser.Scene {
                 //game.prompt.text = "This is the exit.";
                 this.scene.stop("HUDScene");
                 this.scene.start("level1");
+                this.scene.stop("tutorialScene");
                 this.sound.stopAll();
 
         }
@@ -280,7 +281,7 @@ class Tutorial extends Phaser.Scene {
             this.paused = false;
             console.log("Paused: " + this.paused);
             this.scene.stop("pauseScene");
-            this.scene.resume("tutorialScene");
+            this.scene.resume(currentLevel);
         }
     }
 }

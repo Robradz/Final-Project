@@ -2,7 +2,6 @@ class Pause extends Phaser.Scene {
     constructor() {
         super("pauseScene");
         this.isPaused = false;
-        this.returnScene;
     }
 
     preload() {
